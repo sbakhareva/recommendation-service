@@ -15,6 +15,6 @@ public class RecommendationController {
 
     @GetMapping
     public String getRecommendations(@RequestParam UUID userId) {
-        return userId.toString() + new RecommendationDTO(UUID.randomUUID(), "название", "текст");
+        return null;
     }
 }
