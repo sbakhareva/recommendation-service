@@ -1,11 +1,9 @@
 package com.skypro.recommender.repository;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.security.PublicKey;
 import java.util.UUID;
 
 @Repository
