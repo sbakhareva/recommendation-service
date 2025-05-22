@@ -23,10 +23,12 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> getRecommendation(UUID userId) {
         String filePath = "text/Invest500.txt";
-        if ((recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) == 1)
-                && (recommendationsRepository.checkIfUserHasTransactionTypeInvest(userId) == 0)
-                && (recommendationsRepository.getTotalSavingDeposit(userId) > 1000)) {
-            return Optional.of(new RecommendationDTO("Invest 500",
+
+        if (recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) &&
+                !recommendationsRepository.checkIfUserHasTransactionTypeInvest(userId) &&
+                recommendationsRepository.getTotalSavingDeposit(userId) > 1000) {
+            return Optional.of(
+                    new RecommendationDTO("Invest 500",
                     UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a"),
                     fileReaderUtil.readText(filePath)));
         }

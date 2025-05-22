@@ -23,12 +23,12 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> getRecommendation(UUID userId) {
         String filePath = "text/TopSavingText.txt";
-        if ((recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) == 1)
-                && ((recommendationsRepository.getTotalDebitDeposit(userId) >= 50000)
-                || (recommendationsRepository.getTotalSavingDeposit(userId) >= 50000))
-                && (recommendationsRepository.getTotalDebitDeposit(userId)
-                > recommendationsRepository.getTotalDebitWithdraw(userId))) {
-            return Optional.of(new RecommendationDTO("Top Saving",
+
+        if (recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) &&
+                (recommendationsRepository.getTotalDebitDeposit(userId) >= 50000 || recommendationsRepository.getTotalSavingDeposit(userId) >= 50000) &&
+                (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId))) {
+            return Optional.of(
+                    new RecommendationDTO("Top Saving",
                     UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925"),
                     fileReaderUtil.readText(filePath)));
         }
