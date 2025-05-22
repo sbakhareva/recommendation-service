@@ -16,7 +16,7 @@ public class RecommendationController {
         this.recommendationService = recommendationService;
     }
 
-    // в Техническое описание функциональности, п1
+    // условия домашки / Техническое описание функциональности / п1
     @GetMapping("/{user_id}")
     public RecommendationsResponse getRecommendations(@PathVariable UUID userId) {
         return new RecommendationsResponse(userId,
