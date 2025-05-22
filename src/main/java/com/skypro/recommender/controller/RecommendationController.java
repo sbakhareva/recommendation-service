@@ -2,10 +2,7 @@ package com.skypro.recommender.controller;
 
 import com.skypro.recommender.model.RecommendationsResponse;
 import com.skypro.recommender.service.RecommendationService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -19,8 +16,8 @@ public class RecommendationController {
         this.recommendationService = recommendationService;
     }
 
-    @GetMapping
-    public RecommendationsResponse getRecommendations(@RequestParam UUID userId) {
+    @GetMapping("/{user_id}")
+    public RecommendationsResponse getRecommendations(@PathVariable ("user_id") UUID userId) {
         return new RecommendationsResponse(userId,
                 recommendationService.getRecommendation(userId));
     }
