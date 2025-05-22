@@ -16,7 +16,7 @@ public class RecommendationsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int getTotalDebitDeposit(UUID userId){
+    public int getTotalDebitDeposit(UUID userId) {
         Integer result = jdbcTemplate.queryForObject(
                 "SELECT SUM(amount) as total_debit_deposit FROM products_transactions pt WHERE pt.user_id = ? AND product_type = 'DEBIT' AND transaction_type = 'DEPOSIT'",
                 Integer.class,
@@ -40,19 +40,27 @@ public class RecommendationsRepository {
         return result != null ? result : 0;
     }
 
-    public int getTotalSavingWithdraw(UUID userId) {
+    public int checkIfUserHasTransactionTypeInvest(UUID userId) {
         Integer result = jdbcTemplate.queryForObject(
-                "SELECT SUM(amount) as total_saving_withdraw FROM products_transactions pt WHERE pt.user_id = ? AND product_type = 'SAVING' AND transaction_type = 'WITHDRAW'",
+                "SELECT EXISTS (SELECT 1 FROM products_transactions WHERE user_id = ? AND product_type = 'INVEST') as has_invest",
                 Integer.class,
                 userId);
         return result != null ? result : 0;
     }
 
-    public int checkIfUserHasTransactionTypeInvest(UUID userId) {
-        Integer result = jdbcTemplate.queryForObject(
-                "SELECT SUM(amount) as total_invest_deposit FROM products_transactions pt WHERE pt.user_id = ? AND product_type = 'INVEST' AND transaction_type IN ('DEPOSIT', 'WITHDRAW')",
+    public int checkIfUserHasTransactionTypeDebit(UUID userId) {
+        // функция вернет 1, если у пользователя есть хотя бы один продукт типа DEBIT,
+        // или 0, если такого продукта нет
+        return jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT 1 FROM products_transactions WHERE user_id = ? AND product_type = 'DEBIT') as has_debit",
                 Integer.class,
                 userId);
-        return result != null ? result : 0;
+    }
+
+    public int checkIfUserHasTransactionTypeCredit(UUID userId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT EXISTS (SELECT 1 FROM products_transactions WHERE user_id = ? AND product_type = 'CREDIT') as has_credit",
+                Integer.class,
+                userId);
     }
 }
