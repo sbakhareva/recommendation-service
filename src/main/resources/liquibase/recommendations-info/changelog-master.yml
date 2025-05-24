@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: liquibase/recommendations-info/scripts/script.sql
