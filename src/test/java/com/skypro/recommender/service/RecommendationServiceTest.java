@@ -1,9 +1,6 @@
 package com.skypro.recommender.service;
 
 import com.skypro.recommender.model.dto.RecommendationDTO;
-import com.skypro.recommender.service.impl.Invest500ServiceImpl;
-import com.skypro.recommender.service.impl.SimpleLoanServiceImpl;
-import com.skypro.recommender.service.impl.TopSavingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
