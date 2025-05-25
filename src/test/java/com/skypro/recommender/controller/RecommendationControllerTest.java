@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RecommendationController.class)
@@ -25,10 +26,6 @@ public class RecommendationControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private RecommendationService recommendationService;
-    @MockitoBean
-    private RecommendationInfoRepository recommendationInfoRepository;
-    @MockitoBean
-    private RecommendationsRepository recommendationsRepository;
 
     @Test
     void getRecommendation() throws Exception {
@@ -39,19 +36,13 @@ public class RecommendationControllerTest {
         String description = "описание";
         RecommendationDTO recommendation = new RecommendationDTO(name, recommendationId, description);
 
-        when(recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId)).thenReturn(true);
-        when(recommendationsRepository.getTotalDebitDeposit(userId)).thenReturn(74534);
-        when(recommendationsRepository.getTotalDebitWithdraw(userId)).thenReturn(53467);
-
-        when(recommendationInfoRepository.getRecommendationDescription(recommendationId)).thenReturn(description);
-        when(recommendationInfoRepository.getRecommendationName(recommendationId)).thenReturn(name);
-
         when(recommendationService.getRecommendation(userId)).thenReturn(List.of(recommendation));
-//
-//        mockMvc.perform(get("/school/student/get?id=1"))
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(s.getId()))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(s.getName()))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(s.getAge()));
+
+        mockMvc.perform(get("/recommendation/" + userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(userId.toString()))
+                .andExpect(jsonPath("$.recommendations[0].id").value(recommendationId.toString()))
+                .andExpect(jsonPath("$.recommendations[0].name").value(recommendation.getName()))
+                .andExpect(jsonPath("$.recommendations[0].text").value(recommendation.getText()));
     }
 }
