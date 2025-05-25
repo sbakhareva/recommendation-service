@@ -51,7 +51,7 @@ class RecommendationServiceTest {
     }
 
     @Test
-    void getRecommendations_WhenRulesFollowed() throws SQLException {
+    void getRecommendations_WhenSomeRulesFollowed() throws SQLException {
         UUID userId = UUID.fromString("cd515076-5d8a-44be-930e-8d4fcb79f42d");
 
         UUID recommendationId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
