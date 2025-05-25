@@ -34,7 +34,7 @@ class RecommendationServiceTest {
         //
         //
 
-       String response = String.valueOf(recommendationService.getRecommendation(userId));
+        String response = String.valueOf(recommendationService.getRecommendation(userId));
         assertThat(response).contains(userId.toString());
         assertThat(response).contains("рекомендация");
         assertThat(response).contains("описание");
