@@ -4,7 +4,6 @@ import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -29,11 +28,11 @@ class RecommendationServiceTest {
     @Mock
     private Connection connection;
     @Mock
-    private RecommendationRuleSet ruleMock1;
+    private RecommendationRuleSet invest500Service;
     @Mock
-    private RecommendationRuleSet ruleMock2;
+    private RecommendationRuleSet topSavingService;
     @Mock
-    private RecommendationRuleSet ruleMock3;
+    private RecommendationRuleSet simpleLoanService;
 
     private RecommendationService recommendationService;
 
@@ -42,7 +41,7 @@ class RecommendationServiceTest {
         when(dataSource.getConnection()).thenReturn(connection);
 
         recommendationService = new RecommendationService(
-                Arrays.asList(ruleMock1, ruleMock2, ruleMock3),
+                Arrays.asList(invest500Service, topSavingService, simpleLoanService),
                 dataSource
         );
     }
@@ -55,9 +54,9 @@ class RecommendationServiceTest {
 
         RecommendationDTO recommendation = new RecommendationDTO("рекомендация", recommendationId, "описание");
 
-        when(ruleMock1.getRecommendation(userId)).thenReturn(Optional.of(recommendation));
-        when(ruleMock2.getRecommendation(userId)).thenReturn(Optional.empty());
-        when(ruleMock3.getRecommendation(userId)).thenReturn(Optional.empty());
+        when(invest500Service.getRecommendation(userId)).thenReturn(Optional.of(recommendation));
+        when(topSavingService.getRecommendation(userId)).thenReturn(Optional.empty());
+        when(simpleLoanService.getRecommendation(userId)).thenReturn(Optional.empty());
 
         List<RecommendationDTO> response = recommendationService.getRecommendation(userId);
         assertNotNull(response);
