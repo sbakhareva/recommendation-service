@@ -1,9 +1,13 @@
 package com.skypro.recommender.repository;
 
+import ch.qos.logback.classic.model.ReceiverModel;
+import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -26,6 +30,13 @@ public class RecommendationInfoRepository {
         return jdbcTemplate.queryForObject(
                 "SELECT description FROM recommendations WHERE id = ?",
                 String.class,
+                id);
+    }
+
+    public List<Rule> getRecommendationRules(UUID id) {
+        return jdbcTemplate.queryForList(
+                "SELECT * FROM rules WHERE recommendation_id = ?",
+                Rule.class,
                 id);
     }
 }

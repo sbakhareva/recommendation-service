@@ -33,7 +33,8 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
                     new RecommendationDTO(
                             recommendationInfoRepository.getRecommendationName(id),
                             id,
-                            recommendationInfoRepository.getRecommendationDescription(id)));
+                            recommendationInfoRepository.getRecommendationDescription(id),
+                            recommendationInfoRepository.getRecommendationRules(id)));
         }
         return Optional.empty();
     }

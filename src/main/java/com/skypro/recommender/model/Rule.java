@@ -1,8 +1,11 @@
 package com.skypro.recommender.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -11,9 +14,11 @@ import java.util.List;
 @ToString
 public class Rule {
 
-    Long id;
-    String query;
-    List<String> arguments;
-    boolean negate;
-
+    @JsonIgnore
+    private UUID id;
+    private String query;
+    private List<String> arguments;
+    private boolean negate;
+    @JsonIgnore
+    private UUID recommendation_id;
 }

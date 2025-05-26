@@ -1,11 +1,11 @@
 package com.skypro.recommender.repository;
 
 
+import com.skypro.recommender.model.Rule;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -17,8 +17,35 @@ public class DynamicRulesRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public String createRule(String query, List<String> arguments, boolean negate) {
+    public void createRule(Rule rule, UUID recommendation_id) {
+        String query = "INSERT INTO rules (id, query, arguments, negate, recommendation_id) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(
+                query,
+                UUID.randomUUID(),
+                rule.getQuery(),
+                rule.getArguments(),
+                rule.isNegate(),
+                recommendation_id
+        );
+    }
 
-        return null;
+    public String getRecommendationWithRules(UUID recommendation_id) {
+        return jdbcTemplate.queryForObject(
+                "SELECT " +
+                        "r.name, " +
+                        "r.id, " +
+                        "r.description, " +
+                        "ru.id AS rule_id, " +
+                        "ru.query, " +
+                        "ru.arguments, " +
+                        "ru.negate " +
+                        "FROM " +
+                        "recommendations r " +
+                        "JOIN " +
+                        "rules ru ON r.id = ru.recommendation_id " +
+                        "WHERE r.id = ? ",
+                String.class,
+                recommendation_id
+        );
     }
 }

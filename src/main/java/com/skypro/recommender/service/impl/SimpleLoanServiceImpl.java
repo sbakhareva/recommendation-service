@@ -33,7 +33,8 @@ public class SimpleLoanServiceImpl implements RecommendationRuleSet {
                     new RecommendationDTO(
                             recommendationInfoRepository.getRecommendationName(id),
                             id,
-                            recommendationInfoRepository.getRecommendationDescription(id)));
+                            recommendationInfoRepository.getRecommendationDescription(id),
+                            recommendationInfoRepository.getRecommendationRules(id)));
         }
         return Optional.empty();
     }

@@ -52,3 +52,6 @@ ADD CONSTRAINT pk_recommendations_id PRIMARY KEY (id);
 ALTER TABLE rules
 ADD CONSTRAINT fk_recommendations
 FOREIGN KEY (recommendation_id) REFERENCES recommendations(id);
+
+-- changeset sbakhareva:7
+ALTER TABLE rules ALTER COLUMN arguments TYPE BLOB;
