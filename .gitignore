@@ -33,3 +33,7 @@ build/
 .vscode/
 /.mvn/wrapper/maven-wrapper.properties
 /.gitattributes
+/recommendations-info.mv.db
+/recommendations-info.trace.db
+/transaction.trace.db
+/transaction.mv.db
