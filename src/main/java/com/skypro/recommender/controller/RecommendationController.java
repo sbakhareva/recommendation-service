@@ -21,4 +21,5 @@ public class RecommendationController {
         return new RecommendationsResponse(userId,
                 recommendationService.getRecommendation(userId));
     }
+
 }
