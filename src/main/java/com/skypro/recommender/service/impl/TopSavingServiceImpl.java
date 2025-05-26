@@ -24,17 +24,12 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> getRecommendation(UUID userId) {
 
-        UUID id = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925" );
+        UUID id = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
 
         if (recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) >= 50000 || recommendationsRepository.getTotalSavingDeposit(userId) >= 50000) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId))) {
-            return Optional.of(
-                    new RecommendationDTO(
-                            recommendationInfoRepository.getRecommendationName(id),
-                            id,
-                            recommendationInfoRepository.getRecommendationDescription(id),
-                            recommendationInfoRepository.getRecommendationRules(id)));
+            return Optional.of(recommendationInfoRepository.getRecommendation(id));
         }
         return Optional.empty();
     }

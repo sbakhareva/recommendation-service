@@ -24,17 +24,12 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> getRecommendation(UUID userId) {
 
-        UUID id = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a" );
+        UUID id = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
 
         if (recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) &&
                 !recommendationsRepository.checkIfUserHasTransactionTypeInvest(userId) &&
                 recommendationsRepository.getTotalSavingDeposit(userId) > 1000) {
-            return Optional.of(
-                    new RecommendationDTO(
-                            recommendationInfoRepository.getRecommendationName(id),
-                            id,
-                            recommendationInfoRepository.getRecommendationDescription(id),
-                            recommendationInfoRepository.getRecommendationRules(id)));
+            return Optional.of(recommendationInfoRepository.getRecommendation(id));
         }
         return Optional.empty();
     }

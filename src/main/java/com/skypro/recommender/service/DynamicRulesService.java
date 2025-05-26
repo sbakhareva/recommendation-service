@@ -1,10 +1,12 @@
 package com.skypro.recommender.service;
 
+import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,8 +20,15 @@ public class DynamicRulesService {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    public String createRule(Rule rule, UUID recommendation_id) {
-        dynamicRulesRepository.createRule(rule, recommendation_id);
-        return dynamicRulesRepository.getRecommendationWithRules(recommendation_id);
+    public RecommendationInfo createRule(Rule rule, UUID recommendationId) {
+        dynamicRulesRepository.createRule(rule, recommendationId);
+        return new RecommendationInfo(recommendationInfoRepository.getRecommendation(recommendationId), List.of(rule));
+    }
+
+    public RecommendationInfo getRecommendationWithRules(UUID recommendationId) {
+        return new RecommendationInfo(
+                recommendationInfoRepository.getRecommendation(recommendationId),
+                dynamicRulesRepository.getRules(recommendationId)
+        );
     }
 }

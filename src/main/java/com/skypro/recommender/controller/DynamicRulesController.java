@@ -1,10 +1,12 @@
 package com.skypro.recommender.controller;
 
+import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,8 +21,13 @@ public class DynamicRulesController {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    @PostMapping("/{recommendation_id}")
-    public String createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendation_id) {
-        return dynamicRulesService.createRule(rule, recommendation_id);
+    @PostMapping("/create/{recommendation_id}")
+    public RecommendationInfo createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
+        return dynamicRulesService.createRule(rule, recommendationId);
+    }
+
+    @GetMapping("/get/{recommendation_id}")
+    public RecommendationInfo getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
+        return dynamicRulesService.getRecommendationWithRules(recommendationId);
     }
 }

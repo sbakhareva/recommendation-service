@@ -24,17 +24,12 @@ public class SimpleLoanServiceImpl implements RecommendationRuleSet {
     @Override
     public Optional<RecommendationDTO> getRecommendation(UUID userId) {
 
-        UUID id = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f" );
+        UUID id = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
 
         if (!recommendationsRepository.checkIfUserHasTransactionTypeCredit(userId) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId)) &&
                 recommendationsRepository.getTotalDebitWithdraw(userId) > 100000) {
-            return Optional.of(
-                    new RecommendationDTO(
-                            recommendationInfoRepository.getRecommendationName(id),
-                            id,
-                            recommendationInfoRepository.getRecommendationDescription(id),
-                            recommendationInfoRepository.getRecommendationRules(id)));
+            return Optional.of(recommendationInfoRepository.getRecommendation(id));
         }
         return Optional.empty();
     }

@@ -3,9 +3,11 @@ package com.skypro.recommender.repository;
 
 import com.skypro.recommender.model.Rule;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -17,35 +19,25 @@ public class DynamicRulesRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void createRule(Rule rule, UUID recommendation_id) {
-        String query = "INSERT INTO rules (id, query, arguments, negate, recommendation_id) VALUES (?, ?, ?, ?, ?)";
+    public void createRule(Rule rule, UUID recommendationId) {
         jdbcTemplate.update(
-                query,
+                "INSERT INTO rules " +
+                        "(id, query, arguments, negate, recommendation_id) " +
+                        "VALUES (?, ?, ?, ?, ?)",
                 UUID.randomUUID(),
                 rule.getQuery(),
                 rule.getArguments(),
                 rule.isNegate(),
-                recommendation_id
+                recommendationId
         );
     }
 
-    public String getRecommendationWithRules(UUID recommendation_id) {
-        return jdbcTemplate.queryForObject(
-                "SELECT " +
-                        "r.name, " +
-                        "r.id, " +
-                        "r.description, " +
-                        "ru.id AS rule_id, " +
-                        "ru.query, " +
-                        "ru.arguments, " +
-                        "ru.negate " +
-                        "FROM " +
-                        "recommendations r " +
-                        "JOIN " +
-                        "rules ru ON r.id = ru.recommendation_id " +
-                        "WHERE r.id = ? ",
-                String.class,
-                recommendation_id
+    public List<Rule> getRules(UUID recommendationId) {
+        return jdbcTemplate.query(
+                "SELECT * FROM rules " +
+                        "WHERE recommendation_id = ?",
+                new BeanPropertyRowMapper<>(Rule.class),
+                recommendationId
         );
     }
 }
