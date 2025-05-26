@@ -4,9 +4,9 @@ import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,5 +29,11 @@ public class DynamicRulesController {
     @GetMapping("/get/{recommendation_id}")
     public RecommendationInfo getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
         return dynamicRulesService.getRecommendationWithRules(recommendationId);
+    }
+
+    @DeleteMapping("/delete/{rule_id}")
+    public ResponseEntity<Void> deleteRule(@PathVariable("rule_id") UUID ruleId) {
+        dynamicRulesService.deleteRule(ruleId);
+        return ResponseEntity.noContent().build();
     }
 }

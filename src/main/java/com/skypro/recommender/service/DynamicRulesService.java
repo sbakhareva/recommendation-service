@@ -1,5 +1,6 @@
 package com.skypro.recommender.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.repository.DynamicRulesRepository;
@@ -21,7 +22,11 @@ public class DynamicRulesService {
     }
 
     public RecommendationInfo createRule(Rule rule, UUID recommendationId) {
-        dynamicRulesRepository.createRule(rule, recommendationId);
+        try {
+            dynamicRulesRepository.createRule(rule, recommendationId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return new RecommendationInfo(recommendationInfoRepository.getRecommendation(recommendationId), List.of(rule));
     }
 
@@ -30,5 +35,9 @@ public class DynamicRulesService {
                 recommendationInfoRepository.getRecommendation(recommendationId),
                 dynamicRulesRepository.getRules(recommendationId)
         );
+    }
+
+    public void deleteRule(UUID ruleId) {
+        dynamicRulesRepository.deleteRule(ruleId);
     }
 }
