@@ -1,6 +1,7 @@
 package com.skypro.recommender.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -101,6 +102,7 @@ public class RecommendationsRepository {
      * @param userId      идентификатор пользователя
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
+    @Cacheable(value = "userOf", key = "#userId")
     public boolean checkIfUserUseProduct(UUID userId,
                                          String productType) {
         return jdbcTemplate.queryForObject(
@@ -122,6 +124,7 @@ public class RecommendationsRepository {
      * @param userId      идентификатор пользователя
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
+    @Cacheable(value = "activeUser", key = "#userId")
     public boolean checkIfUserIsActiveUserOfProduct(UUID userId,
                                                     String productType) {
         String request = "SELECT CASE WHEN COUNT(*) > 5 THEN true ELSE false END AS is_active " +
@@ -145,6 +148,7 @@ public class RecommendationsRepository {
      * @param operator        оператор сравнения
      * @param checksum        константная сумма для сравнения, прописанная в правиле
      */
+    @Cacheable(value = "sumCompare", key = "#userId")
     public boolean transactionSumCompare(UUID userId,
                                          String productType,
                                          String transactionType,
@@ -184,6 +188,7 @@ public class RecommendationsRepository {
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      * @param operator    оператор сравнения
      */
+    @Cacheable(value = "compareDepositWithdraw", key = "#userId")
     public boolean transactionSumCompareDepositWithdraw(UUID userId,
                                                         String productType,
                                                         String operator) {
@@ -200,8 +205,8 @@ public class RecommendationsRepository {
                 "FROM transactions t JOIN products p ON t.product_id = p.id " +
                 "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
                 + "(SELECT COALESCE(SUM(t.amount), 0) " +
-                "FROM transactions t JOIN products p ON t.product_id=p.id " +
-                "WHERE t.user_id = ? AND t.type='WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
                 + ") sub";
         Object[] params = new Object[]{
                 operator,
@@ -211,6 +216,8 @@ public class RecommendationsRepository {
                 operator,
                 userId,
                 productType,
+                userId,
+                productType
         };
         return jdbcTemplate.queryForObject(
                 request,

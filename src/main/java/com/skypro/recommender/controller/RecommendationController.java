@@ -19,15 +19,15 @@ public class RecommendationController {
         this.recommendationServiceV2 = recommendationServiceV2;
     }
 
-    @GetMapping("/{user_id}")
-    public RecommendationsResponse getRecommendations(@PathVariable ("user_id") UUID userId) {
-        return new RecommendationsResponse(userId,
-                recommendationService.getRecommendation(userId));
-    }
-
 //    @GetMapping("/{user_id}")
-//    public RecommendationsResponse getRecommendation(@PathVariable("user_id") UUID userId) {
+//    public RecommendationsResponse getRecommendations(@PathVariable ("user_id") UUID userId) {
 //        return new RecommendationsResponse(userId,
-//                recommendationServiceV2.getRecommendations(userId));
+//                recommendationService.getRecommendation(userId));
 //    }
+
+    @GetMapping("/{user_id}")
+    public RecommendationsResponse getRecommendation(@PathVariable("user_id") UUID userId) {
+        return new RecommendationsResponse(userId,
+                recommendationServiceV2.getRecommendations(userId));
+    }
 }
