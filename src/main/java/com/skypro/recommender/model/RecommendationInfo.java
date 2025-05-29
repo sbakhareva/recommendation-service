@@ -13,6 +13,6 @@ import java.util.List;
 @ToString
 public class RecommendationInfo {
 
-    private RecommendationDTO recommendationDTO;
+    private RecommendationDTO recommendations;
     private List<Rule> rules;
 }

@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,13 @@ public class DynamicRulesRepository {
                 "DELETE FROM rules " +
                         "WHERE id = ?",
                 ruleId
+        );
+    }
+
+    public List<Rule> getAllRules() {
+        return jdbcTemplate.query(
+                "SELECT * FROM rules",
+                new BeanPropertyRowMapper<>(Rule.class)
         );
     }
 }

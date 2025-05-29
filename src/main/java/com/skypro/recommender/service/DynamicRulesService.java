@@ -7,7 +7,6 @@ import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,7 +26,8 @@ public class DynamicRulesService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return new RecommendationInfo(recommendationInfoRepository.getRecommendation(recommendationId), List.of(rule));
+        return new RecommendationInfo(recommendationInfoRepository.getRecommendation(recommendationId),
+                dynamicRulesRepository.getRules(recommendationId));
     }
 
     public RecommendationInfo getRecommendationWithRules(UUID recommendationId) {
