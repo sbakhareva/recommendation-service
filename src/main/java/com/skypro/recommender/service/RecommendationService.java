@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Первая версия сервиса, работающая с правила, прописанными в коде
+ */
 @Service
 public class RecommendationService {
 

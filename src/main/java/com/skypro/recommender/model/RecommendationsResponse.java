@@ -6,6 +6,9 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Класс, описывающий ответ сервера пользователю
+ */
 @Setter
 @Getter
 @AllArgsConstructor

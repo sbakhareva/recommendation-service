@@ -1,11 +1,16 @@
 package com.skypro.recommender.repository;
 
+import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Репозиторий, который работает с базой данных recommendation-info
+ */
 @Repository
 public class RecommendationInfoRepository {
 
@@ -27,5 +32,13 @@ public class RecommendationInfoRepository {
                 "SELECT description FROM recommendations WHERE id = ?",
                 String.class,
                 id);
+    }
+
+    public RecommendationDTO getRecommendation(UUID id) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM recommendations WHERE id = ? ",
+                new BeanPropertyRowMapper<>(RecommendationDTO.class),
+                id
+        );
     }
 }
