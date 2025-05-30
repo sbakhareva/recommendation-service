@@ -4,6 +4,7 @@ package com.skypro.recommender.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,13 +20,14 @@ import java.util.UUID;
 public class DynamicRulesRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public DynamicRulesRepository(@Qualifier("recommendationsInfoJdbcTemplate") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public void createRule(Rule rule, UUID recommendationId) throws JsonProcessingException {
-        String argumentsJson = new ObjectMapper().writeValueAsString(rule.getArguments());
+        String argumentsJson = objectMapper.writeValueAsString(rule.getArguments());
         jdbcTemplate.update(
                 "INSERT INTO rules " +
                         "(id, query, arguments, negate, recommendation_id) " +
@@ -42,7 +44,7 @@ public class DynamicRulesRepository {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
                         "WHERE recommendation_id = ?",
-                new BeanPropertyRowMapper<>(Rule.class),
+                new RuleRowMapper(),
                 recommendationId
         );
     }
