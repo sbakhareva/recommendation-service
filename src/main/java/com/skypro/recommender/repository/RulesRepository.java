@@ -32,6 +32,7 @@ public class RulesRepository {
                 product.getName(),
                 product.getDescription());
 
+        //Заполняем все правила, arguments как строка
         for (RuleDTO rule : product.getRules()) {
             jdbcTemplate.update(
                     "INSERT INTO rules " +
@@ -48,12 +49,14 @@ public class RulesRepository {
 
     public List<ProductDTO> getAllProducts() {
 
+        //Создаем мапу для групировки правил по id продукта
         Map<UUID, ProductDTO> productMap = new HashMap<>();
 
         jdbcTemplate.query(
                 "SELECT p.id AS product_id, p.name, p.description, r.id  AS rule_id, r.query, r.arguments, r.negate " +
                         "FROM recommendations p " +
                         "LEFT JOIN rules r ON p.id = r.recommendation_id",
+                //Заполняем мапу по всем строкам
                 (response) -> {
                     UUID productId = UUID.fromString(response.getString("product_id"));
 
@@ -62,6 +65,7 @@ public class RulesRepository {
                     product.setName(response.getString("name"));
                     product.setDescription(response.getString("description"));
 
+                    //Если id правила не пустое, то добавляем правило в продукт
                     if (response.getString("rule_id") != null) {
                         RuleDTO rule = new RuleDTO();
                         rule.setId(UUID.fromString(response.getString("rule_id")));
@@ -73,6 +77,7 @@ public class RulesRepository {
                         }
                         rule.setNegate(response.getBoolean("negate"));
 
+                        //Если ещё нет списка правил у продукта, то создаем его
                         if (product.getRules() == null) {
                             product.setRules(new ArrayList<>());
                         }
@@ -84,10 +89,12 @@ public class RulesRepository {
     }
 
     public void deleteProductById(String productId) {
+        //Удаляем все правила по id продукта
         jdbcTemplate.update(
                 "DELETE FROM rules " +
                         "WHERE recommendation_id = ?",
                 productId);
+        //Удаляем сам продукт
         jdbcTemplate.update(
                 "DELETE FROM recommendations " +
                         "WHERE id = ?",
