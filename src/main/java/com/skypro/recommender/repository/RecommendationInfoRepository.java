@@ -1,11 +1,15 @@
 package com.skypro.recommender.repository;
 
+import com.skypro.recommender.model.RecommendationInfo;
+import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,9 +40,33 @@ public class RecommendationInfoRepository {
 
     public RecommendationDTO getRecommendation(UUID id) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM recommendations WHERE id = ? ",
+                "SELECT id, name, description FROM recommendations WHERE id = ? ",
                 new BeanPropertyRowMapper<>(RecommendationDTO.class),
                 id
         );
+    }
+
+    public RecommendationInfo getRecommendationWithRules(UUID id) {
+        RecommendationInfo recommendation = jdbcTemplate.queryForObject(
+                "SELECT id, name, description " +
+                        "FROM recommendations " +
+                        "WHERE id = ? ",
+                (rs, rowNum) -> {
+                    RecommendationInfo rec = new RecommendationInfo();
+                    rec.setName(rs.getString("name"));
+                    rec.setId(UUID.fromString(rs.getString("id")));
+                    rec.setDescription(rs.getString("description"));
+                    return rec;
+                },
+                id
+        );
+        List<Rule> rules = jdbcTemplate.query(
+                "SELECT * FROM rules WHERE recommendation_id = ?",
+                new RuleRowMapper(),
+                id
+
+        );
+        recommendation.setRules(rules);
+        return recommendation;
     }
 }

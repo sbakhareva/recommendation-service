@@ -2,6 +2,7 @@ package com.skypro.recommender.controller;
 
 import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.dto.RecommendationDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
 import org.springframework.http.ResponseEntity;

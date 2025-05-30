@@ -26,15 +26,11 @@ public class DynamicRulesService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return new RecommendationInfo(recommendationInfoRepository.getRecommendation(recommendationId),
-                dynamicRulesRepository.getRules(recommendationId));
+        return recommendationInfoRepository.getRecommendationWithRules(recommendationId);
     }
 
     public RecommendationInfo getRecommendationWithRules(UUID recommendationId) {
-        return new RecommendationInfo(
-                recommendationInfoRepository.getRecommendation(recommendationId),
-                dynamicRulesRepository.getRules(recommendationId)
-        );
+        return recommendationInfoRepository.getRecommendationWithRules(recommendationId);
     }
 
     public void deleteRule(UUID ruleId) {
