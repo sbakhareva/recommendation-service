@@ -40,6 +40,6 @@ public class RecommendationControllerTest {
                 .andExpect(jsonPath("$.userId").value(userId.toString()))
                 .andExpect(jsonPath("$.recommendations[0].id").value(recommendationId.toString()))
                 .andExpect(jsonPath("$.recommendations[0].name").value(recommendation.getName()))
-                .andExpect(jsonPath("$.recommendations[0].text").value(recommendation.getText()));
+                .andExpect(jsonPath("$.recommendations[0].text").value(recommendation.getDescription()));
     }
 }
