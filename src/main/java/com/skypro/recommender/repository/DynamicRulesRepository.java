@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
+import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -45,7 +46,7 @@ public class DynamicRulesRepository {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
                         "WHERE recommendation_id = ?",
-                new BeanPropertyRowMapper<>(Rule.class),
+                new RuleRowMapper(),
                 recommendationId
         );
     }
