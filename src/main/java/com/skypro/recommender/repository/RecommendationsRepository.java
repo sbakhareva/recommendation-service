@@ -2,9 +2,11 @@ package com.skypro.recommender.repository;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -223,6 +225,33 @@ public class RecommendationsRepository {
                 request,
                 Boolean.class,
                 params
+        );
+    }
+
+    public UUID getUserIdByUsername(String username) throws EmptyResultDataAccessException {
+        return jdbcTemplate.queryForObject(
+                "SELECT id FROM users " +
+                        "WHERE username = ? ",
+                UUID.class,
+                username
+        );
+    }
+
+    public String getFirstNameByUsername(String username) throws EmptyResultDataAccessException {
+        return jdbcTemplate.queryForObject(
+                "SELECT first_name FROM users " +
+                        "WHERE username = ? ",
+                String.class,
+                username
+        );
+    }
+
+    public String getLastNameByUsername(String username) throws EmptyResultDataAccessException {
+        return jdbcTemplate.queryForObject(
+                "SELECT last_name FROM users " +
+                        "WHERE username = ? ",
+                String.class,
+                username
         );
     }
 }
