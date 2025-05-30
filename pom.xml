@@ -12,7 +12,7 @@
 	<artifactId>recommendation-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Recommendation Service</name>
-	<description>ьicroservice for a banking application that selects banking products based on the capabilities of a specific user</description>
+	<description>microservice for a banking application that selects banking products based on the capabilities of a specific user</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -86,11 +86,26 @@
 	</dependencies>
 
 	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
 
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

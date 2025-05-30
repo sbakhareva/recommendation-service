@@ -2,6 +2,7 @@ package com.skypro.recommender.repository;
 
 import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ public class RecommendationInfoRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Cacheable(value = "getRecName", key = "#id")
     public String getRecommendationName(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT name FROM recommendations WHERE id = ?",
@@ -27,6 +29,7 @@ public class RecommendationInfoRepository {
                 id);
     }
 
+    @Cacheable(value = "getRecDescription", key = "#id")
     public String getRecommendationDescription(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT description FROM recommendations WHERE id = ?",
@@ -34,6 +37,7 @@ public class RecommendationInfoRepository {
                 id);
     }
 
+    @Cacheable(value = "recommendation", key = "#id")
     public RecommendationDTO getRecommendation(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM recommendations WHERE id = ? ",

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.Rule;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,7 @@ public class DynamicRulesRepository {
         );
     }
 
+    @Cacheable(value = "getRules", key = "#recommendationId")
     public List<Rule> getRules(UUID recommendationId) {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
@@ -55,6 +57,7 @@ public class DynamicRulesRepository {
         );
     }
 
+    @Cacheable(value = "getAllRules", key = "777")
     public List<Rule> getAllRules() {
         return jdbcTemplate.query(
                 "SELECT * FROM rules",

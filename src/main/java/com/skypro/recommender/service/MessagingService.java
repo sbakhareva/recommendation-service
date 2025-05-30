@@ -77,7 +77,7 @@ public class MessagingService {
     public void sendRecommendation(long chatId, String message) throws IOException {
         try {
             UUID userId = recommendationsRepository.getUserIdByUsername(extractUsername(message));
-            List<RecommendationDTO> recommendations = recommendationServiceV2.getRecommendations(userId);
+            List<RecommendationDTO> recommendations = recommendationService.getRecommendations(userId);
             if (recommendations.isEmpty()) {
                 SendMessage noRecs = new SendMessage(chatId, "К сожалению, для Вас не найдено подходящих продуктов!");
                 telegramBot.execute(noRecs);
