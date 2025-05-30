@@ -1,6 +1,6 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.ProductDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +51,7 @@ class Invest500ServiceImplTest {
 
         when(recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId)).thenReturn(false);
 
-        Optional<RecommendationDTO> response = invest500Service.getRecommendation(userId);
+        Optional<ProductDTO> response = invest500Service.getRecommendation(userId);
         assertThat(response).isEqualTo(Optional.empty());
     }
 }

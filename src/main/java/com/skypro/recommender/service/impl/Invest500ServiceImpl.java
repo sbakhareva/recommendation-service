@@ -1,6 +1,6 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.ProductDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -22,7 +22,7 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
     }
 
     @Override
-    public Optional<RecommendationDTO> getRecommendation(UUID userId) {
+    public Optional<ProductDTO> getRecommendation(UUID userId) {
 
         UUID id = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a" );
 
@@ -30,10 +30,11 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
                 !recommendationsRepository.checkIfUserHasTransactionTypeInvest(userId) &&
                 recommendationsRepository.getTotalSavingDeposit(userId) > 1000) {
             return Optional.of(
-                    new RecommendationDTO(
+                    new ProductDTO(
                             recommendationInfoRepository.getRecommendationName(id),
                             id,
-                            recommendationInfoRepository.getRecommendationDescription(id)));
+                            recommendationInfoRepository.getRecommendationDescription(id),
+                            null));
         }
         return Optional.empty();
     }

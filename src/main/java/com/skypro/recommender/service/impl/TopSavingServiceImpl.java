@@ -1,6 +1,6 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.ProductDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -22,7 +22,7 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
     }
 
     @Override
-    public Optional<RecommendationDTO> getRecommendation(UUID userId) {
+    public Optional<ProductDTO> getRecommendation(UUID userId) {
 
         UUID id = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925" );
 
@@ -30,10 +30,11 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
                 (recommendationsRepository.getTotalDebitDeposit(userId) >= 50000 || recommendationsRepository.getTotalSavingDeposit(userId) >= 50000) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId))) {
             return Optional.of(
-                    new RecommendationDTO(
+                    new ProductDTO(
                             recommendationInfoRepository.getRecommendationName(id),
                             id,
-                            recommendationInfoRepository.getRecommendationDescription(id)));
+                            recommendationInfoRepository.getRecommendationDescription(id),
+                            null));
         }
         return Optional.empty();
     }
