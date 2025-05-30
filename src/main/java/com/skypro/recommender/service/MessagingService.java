@@ -62,7 +62,7 @@ public class MessagingService {
         try {
             String firstName = recommendationsRepository.getFirstNameByUsername(extractUsername(message));
             String lastName = recommendationsRepository.getLastNameByUsername(extractUsername(message));
-            String text = "Здравствуйте, " + firstName + lastName + "!" + "\n\nРекомендации для Вас:\n";
+            String text = "Здравствуйте, " + firstName + " " + lastName + "!" + "\n\nРекомендации для Вас:\n";
             SendMessage response = new SendMessage(chatId, text);
             telegramBot.execute(response);
         } catch (EmptyResultDataAccessException e) {
