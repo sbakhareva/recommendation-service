@@ -66,21 +66,26 @@ public class RecommendationServiceV2 {
     }
 
     private boolean checkRules(UUID userId, Rule rule) {
-
-        return switch (rule.getQuery()) {
-            case "USER_OF" -> recommendationsRepository.checkIfUserUseProduct(userId, rule.getArguments().get(0));
-            case "ACTIVE_USER_OF" -> recommendationsRepository.checkIfUserIsActiveUserOfProduct(userId,
+        boolean result;
+        switch (rule.getQuery()) {
+            case "USER_OF" ->
+                    result = recommendationsRepository.checkIfUserUseProduct(userId, rule.getArguments().get(0));
+            case "ACTIVE_USER_OF" ->
+                    result = recommendationsRepository.checkIfUserIsActiveUserOfProduct(userId,
                     rule.getArguments().get(0));
-            case "TRANSACTION_SUM_COMPARE" -> recommendationsRepository.transactionSumCompare(userId,
+            case "TRANSACTION_SUM_COMPARE" ->
+                    result = recommendationsRepository.transactionSumCompare(userId,
                     rule.getArguments().get(0),
                     rule.getArguments().get(1),
                     rule.getArguments().get(2),
                     Integer.parseInt(rule.getArguments().get(3)));
             case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" ->
-                    recommendationsRepository.transactionSumCompareDepositWithdraw(userId,
+                    result = recommendationsRepository.transactionSumCompareDepositWithdraw(userId,
                             rule.getArguments().get(0),
                             rule.getArguments().get(1));
-            default -> false;
-        };
+            default -> result = false;
+        }
+        System.out.println("Rule: " + rule.getQuery() + ", args: " + rule.getArguments() + ", result: ");
+        return result;
     }
 }

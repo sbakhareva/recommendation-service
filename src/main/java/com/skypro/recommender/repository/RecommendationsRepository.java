@@ -154,22 +154,39 @@ public class RecommendationsRepository {
                                          String transactionType,
                                          String operator,
                                          int checksum) {
-        String request = "SELECT CASE "
-                + "WHEN ? = '>'  AND SUM(t.amount) > ? THEN true "
-                + "WHEN ? = '<'  AND SUM(t.amount) < ? THEN true "
-                + "WHEN ? = '='  AND SUM(t.amount) = ? THEN true "
-                + "WHEN ? = '>=' AND SUM(t.amount) >= ? THEN true "
-                + "WHEN ? = '<=' AND SUM(t.amount) <= ? THEN true "
-                + "ELSE false END AS comparison_result "
-                + "FROM transactions t "
-                + "JOIN products p ON t.product_id = p.id "
-                + "WHERE t.user_id = ? AND p.type = ? AND t.type = ?";
+        String request;
+        switch (operator) {
+            case ">" -> {
+                request = "SELECT CASE WHEN SUM(t.amount) > ? THEN true ELSE false END AS result " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND p.type = ? AND t.type = ? ";
+            }
+            case "<" -> {
+                request = "SELECT CASE WHEN SUM(t.amount) < ? THEN true ELSE false END AS result " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND p.type = ? AND t.type = ? ";
+            }
+            case "=" -> {
+                request = "SELECT CASE WHEN SUM(t.amount) = ? THEN true ELSE false END AS result " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND p.type = ? AND t.type = ? ";
+            }
+            case ">=" -> {
+                request = "SELECT CASE WHEN SUM(t.amount) >= ? THEN true ELSE false END AS result " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND p.type = ? AND t.type = ? ";
+            }
+            case "<=" -> {
+                request = "SELECT CASE WHEN SUM(t.amount) <= ? THEN true ELSE false END AS result " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND p.type = ? AND t.type = ? ";
+            }
+            default -> {
+                throw new IllegalArgumentException("Неопознанный оператор " + operator);
+            }
+        }
         Object[] params = new Object[]{
-                operator, checksum,
-                operator, checksum,
-                operator, checksum,
-                operator, checksum,
-                operator, checksum,
+                checksum,
                 userId,
                 productType,
                 transactionType
@@ -192,28 +209,83 @@ public class RecommendationsRepository {
     public boolean transactionSumCompareDepositWithdraw(UUID userId,
                                                         String productType,
                                                         String operator) {
-        String request = "SELECT CASE "
-                + "WHEN ? = '>'  AND deposit_sum > withdraw_sum THEN true "
-                + "WHEN ? = '<'  AND deposit_sum < withdraw_sum THEN true "
-                + "WHEN ? = '='  AND deposit_sum = withdraw_sum THEN true "
-                + "WHEN ? = '>=' AND deposit_sum >= withdraw_sum THEN true "
-                + "WHEN ? = '<=' AND deposit_sum <= withdraw_sum THEN true "
-                + "ELSE false END AS result "
-                + "FROM ("
-                + "SELECT "
-                + "(SELECT COALESCE(SUM(t.amount), 0) " +
-                "FROM transactions t JOIN products p ON t.product_id = p.id " +
-                "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
-                + "(SELECT COALESCE(SUM(t.amount), 0) " +
-                "FROM transactions t JOIN products p ON t.product_id = p.id " +
-                "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
-                + ") sub";
+        String request;
+        switch (operator) {
+            case ">" -> {
+                request = "SELECT CASE "
+                        + "WHEN deposit_sum > withdraw_sum THEN true "
+                        + "ELSE false END AS result "
+                        + "FROM ("
+                        + "SELECT "
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                        + ") sub";
+            }
+            case "<" -> {
+                request = "SELECT CASE "
+                        + "WHEN deposit_sum < withdraw_sum THEN true "
+                        + "ELSE false END AS result "
+                        + "FROM ("
+                        + "SELECT "
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                        + ") sub";
+            }
+            case "=" -> {
+                request = "SELECT CASE "
+                        + "WHEN deposit_sum = withdraw_sum THEN true "
+                        + "ELSE false END AS result "
+                        + "FROM ("
+                        + "SELECT "
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                        + ") sub";
+            }
+            case ">=" -> {
+                request = "SELECT CASE "
+                        + "WHEN deposit_sum >= withdraw_sum THEN true "
+                        + "ELSE false END AS result "
+                        + "FROM ("
+                        + "SELECT "
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                        + ") sub";
+            }
+            case "<=" -> {
+                request = "SELECT CASE "
+                        + "WHEN deposit_sum <= withdraw_sum THEN true "
+                        + "ELSE false END AS result "
+                        + "FROM ("
+                        + "SELECT "
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type='DEPOSIT' AND p.type= ?) AS deposit_sum,"
+                        + "(SELECT COALESCE(SUM(t.amount), 0) " +
+                        "FROM transactions t JOIN products p ON t.product_id = p.id " +
+                        "WHERE t.user_id = ? AND t.type= 'WITHDRAW' AND p.type= ?) AS withdraw_sum"
+                        + ") sub";
+            }
+            default -> {
+                throw new IllegalArgumentException("Неопознанный оператор " + operator);
+            }
+        }
         Object[] params = new Object[]{
-                operator,
-                operator,
-                operator,
-                operator,
-                operator,
                 userId,
                 productType,
                 userId,
