@@ -5,6 +5,9 @@ import lombok.*;
 
 import java.util.List;
 
+/**
+ * Класс, описывающий ответ для работы с динамическими правилами (не для пользователя)
+ */
 @Getter
 @Setter
 @AllArgsConstructor

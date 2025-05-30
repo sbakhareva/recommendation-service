@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Репозиторий, который работает с базой данных recommendation-info
+ */
 @Repository
 public class RecommendationInfoRepository {
 

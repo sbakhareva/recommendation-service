@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * Вторая версия сервиса, работающая с динамическими правилами, сохраненными в базе данных
+ */
 @Service
 public class RecommendationServiceV2 {
 

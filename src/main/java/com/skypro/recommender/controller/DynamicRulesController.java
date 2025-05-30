@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Контроллер для работы непосредственно с динамическими правилами: их сохранение, просмотр и удаление
+ */
 @RestController
 @RequestMapping("/rule")
 public class DynamicRulesController {

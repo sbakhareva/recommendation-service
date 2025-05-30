@@ -9,10 +9,12 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Репозиторий, который работает с базой данных recommendation-info, в основном с таблицей rules
+ */
 @Repository
 public class DynamicRulesRepository {
 

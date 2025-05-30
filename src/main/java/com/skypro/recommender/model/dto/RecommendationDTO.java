@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ * Класс, описывающий рекомендацию без динамических правил
+ */
 @Setter
 @Getter
 @AllArgsConstructor

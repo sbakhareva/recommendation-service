@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 /**
- * Репозиторий, который работает базой данных transactions
+ * Репозиторий, который работает с базой данных transactions
  */
 @Repository
 public class RecommendationsRepository {
