@@ -4,6 +4,7 @@ package com.skypro.recommender.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.RuleStatistics;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -62,6 +63,23 @@ public class DynamicRulesRepository {
         return jdbcTemplate.query(
                 "SELECT * FROM rules",
                 new BeanPropertyRowMapper<>(Rule.class)
+        );
+    }
+
+    public void incrementCounter(UUID ruleId) {
+        String sql = "UPDATE rules SET counter = counter + 1 WHERE id = ?";
+        jdbcTemplate.update(sql, ruleId);
+    }
+
+    public List<RuleStatistics> getRulesStatistics() {
+        String request = "SELECT id AS ruleId, " +
+                "counter AS count " +
+                "FROM rules";
+        return jdbcTemplate.query(
+                request, (stats, rowNum) -> new RuleStatistics(
+                        UUID.fromString(stats.getString("id")),
+                        stats.getInt("counter"
+                        ))
         );
     }
 }

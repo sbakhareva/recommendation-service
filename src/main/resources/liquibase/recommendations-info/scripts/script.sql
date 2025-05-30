@@ -58,3 +58,6 @@ ALTER TABLE rules ALTER COLUMN arguments TYPE TEXT;
 
 --changeset sbakhareva:16
 ALTER TABLE rules ALTER COLUMN arguments CLOB;
+
+--changeset sbakhareva:17
+ALTER TABLE rules ADD COLUMN counter BIGINT DEFAULT 0;

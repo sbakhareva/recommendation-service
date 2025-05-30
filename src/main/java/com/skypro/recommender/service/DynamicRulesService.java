@@ -3,6 +3,7 @@ package com.skypro.recommender.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,13 @@ public class DynamicRulesService {
 
     public void deleteRule(UUID ruleId) {
         dynamicRulesRepository.deleteRule(ruleId);
+    }
+
+    public List<Rule> getAllRules() {
+        return dynamicRulesRepository.getAllRules();
+    }
+
+    public List<RuleStatistics> getRuleStatistics() {
+        return dynamicRulesRepository.getRulesStatistics();
     }
 }

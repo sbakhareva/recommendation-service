@@ -2,11 +2,14 @@ package com.skypro.recommender.controller;
 
 import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
+import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,4 +42,10 @@ public class DynamicRulesController {
         dynamicRulesService.deleteRule(ruleId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/stats")
+    public List<RuleStatistics> getStats() {
+        return dynamicRulesService.getRuleStatistics();
+    }
 }
+

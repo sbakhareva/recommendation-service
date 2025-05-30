@@ -66,12 +66,14 @@ public class RecommendationServiceV2 {
     }
 
     private boolean checkRules(UUID userId, Rule rule) {
-
-        return switch (rule.getQuery()) {
-            case "USER_OF" -> recommendationsRepository.checkIfUserUseProduct(userId, rule.getArguments().get(0));
-            case "ACTIVE_USER_OF" -> recommendationsRepository.checkIfUserIsActiveUserOfProduct(userId,
+        boolean result = switch (rule.getQuery()) {
+            case "USER_OF" ->
+                recommendationsRepository.checkIfUserUseProduct(userId, rule.getArguments().get(0));
+            case "ACTIVE_USER_OF" ->
+                recommendationsRepository.checkIfUserIsActiveUserOfProduct(userId,
                     rule.getArguments().get(0));
-            case "TRANSACTION_SUM_COMPARE" -> recommendationsRepository.transactionSumCompare(userId,
+            case "TRANSACTION_SUM_COMPARE" ->
+                recommendationsRepository.transactionSumCompare(userId,
                     rule.getArguments().get(0),
                     rule.getArguments().get(1),
                     rule.getArguments().get(2),
@@ -82,5 +84,9 @@ public class RecommendationServiceV2 {
                             rule.getArguments().get(1));
             default -> false;
         };
+        if (result) {
+            dynamicRulesRepository.incrementCounter(rule.getId());
+        }
+        return result;
     }
 }
