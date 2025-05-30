@@ -36,3 +36,25 @@ INSERT INTO recommendations (id, name, description) VALUES
 Удобное оформление. Подать заявку на кредит можно онлайн на нашем сайте или в мобильном приложении.
 Широкий выбор кредитных продуктов. Мы предлагаем кредиты на различные цели: покупку недвижимости, автомобиля, образование, лечение и многое другое.
 Не упустите возможность воспользоваться выгодными условиями кредитования от нашей компании!');
+
+-- changeset sbakhareva:5
+CREATE TABLE rules (
+id UUID PRIMARY KEY NOT NULL,
+query VARCHAR(50) NOT NULL,
+arguments VARCHAR(255) NOT NULL,
+negate BOOLEAN NOT NULL,
+recommendation_id UUID
+)
+
+-- changeset sbakhareva:6
+ALTER TABLE recommendations
+ADD CONSTRAINT pk_recommendations_id PRIMARY KEY (id);
+ALTER TABLE rules
+ADD CONSTRAINT fk_recommendations
+FOREIGN KEY (recommendation_id) REFERENCES recommendations(id);
+
+-- changeset sbakhareva:14
+ALTER TABLE rules ALTER COLUMN arguments TYPE TEXT;
+
+--changeset sbakhareva:16
+ALTER TABLE rules ALTER COLUMN arguments CLOB;
