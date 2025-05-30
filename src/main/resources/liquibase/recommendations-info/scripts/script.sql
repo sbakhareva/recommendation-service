@@ -53,8 +53,5 @@ ALTER TABLE rules
 ADD CONSTRAINT fk_recommendations
 FOREIGN KEY (recommendation_id) REFERENCES recommendations(id);
 
--- changeset sbakhareva:14
-ALTER TABLE rules ALTER COLUMN arguments TYPE TEXT;
-
---changeset sbakhareva:16
-ALTER TABLE rules ALTER COLUMN arguments CLOB;
+--changeset sbakhareva:17
+ALTER TABLE rules ALTER COLUMN arguments VARCHAR(250);
