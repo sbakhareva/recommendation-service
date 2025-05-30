@@ -21,16 +21,19 @@ public class MessagingService {
     private final TelegramBot telegramBot;
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationService recommendationService;
+    private final RecommendationServiceV2 recommendationServiceV2;
     private final RecommendationInfoRepository recommendationInfoRepository;
 
 
     public MessagingService(TelegramBot telegramBot,
                             RecommendationsRepository recommendationsRepository,
                             RecommendationService recommendationService,
+                            RecommendationServiceV2 recommendationServiceV2,
                             RecommendationInfoRepository recommendationInfoRepository) {
         this.telegramBot = telegramBot;
         this.recommendationsRepository = recommendationsRepository;
         this.recommendationService = recommendationService;
+        this.recommendationServiceV2 = recommendationServiceV2;
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
@@ -74,7 +77,11 @@ public class MessagingService {
     public void sendRecommendation(long chatId, String message) throws IOException {
         try {
             UUID userId = recommendationsRepository.getUserIdByUsername(extractUsername(message));
-            List<RecommendationDTO> recommendations = recommendationService.getRecommendation(userId);
+            List<RecommendationDTO> recommendations = recommendationServiceV2.getRecommendations(userId);
+            if (recommendations.isEmpty()) {
+                SendMessage noRecs = new SendMessage(chatId, "К сожалению, для Вас не найдено подходящих продуктов!");
+                telegramBot.execute(noRecs);
+            }
             for (RecommendationDTO recommendation : recommendations) {
                 String name = recommendationInfoRepository.getRecommendationName(recommendation.getId());
                 switch (name) {

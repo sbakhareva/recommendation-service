@@ -29,8 +29,7 @@ public class RecommendationService {
         this.dataSource = dataSource;
     }
 
-    public List<RecommendationDTO> getRecommendation(UUID userId) {
-
+    public List<RecommendationDTO> getRecommendations(UUID userId) {
         try (Connection conn = dataSource.getConnection()) {
             logger.info("########Connection established!########" );
         } catch (SQLException ex) {

@@ -25,7 +25,7 @@ public class RecommendationController {
 //    @GetMapping("/{user_id}")
 //    public RecommendationsResponse getRecommendations(@PathVariable ("user_id") UUID userId) {
 //        return new RecommendationsResponse(userId,
-//                recommendationService.getRecommendation(userId));
+//                recommendationService.getRecommendations(userId));
 //    }
 
     @GetMapping("/{user_id}")

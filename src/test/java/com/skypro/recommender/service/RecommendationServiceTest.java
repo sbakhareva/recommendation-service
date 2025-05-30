@@ -58,7 +58,7 @@ class RecommendationServiceTest {
         when(topSavingService.getRecommendation(userId)).thenReturn(Optional.empty());
         when(simpleLoanService.getRecommendation(userId)).thenReturn(Optional.empty());
 
-        List<RecommendationDTO> response = recommendationService.getRecommendation(userId);
+        List<RecommendationDTO> response = recommendationService.getRecommendations(userId);
         assertNotNull(response);
         assertTrue(response.contains(recommendation));
         assertEquals(1,response.size());

@@ -33,7 +33,7 @@ public class RecommendationControllerTest {
         String description = "описание";
         RecommendationDTO recommendation = new RecommendationDTO(name, recommendationId, description);
 
-        when(recommendationService.getRecommendation(userId)).thenReturn(List.of(recommendation));
+        when(recommendationService.getRecommendations(userId)).thenReturn(List.of(recommendation));
 
         mockMvc.perform(get("/recommendation/" + userId))
                 .andExpect(status().isOk())
