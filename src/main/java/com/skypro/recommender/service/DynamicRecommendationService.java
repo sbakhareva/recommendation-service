@@ -29,11 +29,14 @@ public class DynamicRecommendationService {
         List<String> queryArgs = rule.getArguments();
 
         boolean result = switch (rule.getQuery()) {
-            case "USER_OF" -> repository.isUserOfProduct(userId, queryArgs.get(0));
+            case "USER_OF" ->
+                    repository.isUserOfProduct(userId, queryArgs.get(0));
 
-            case "ACTIVE_USER_OF" -> repository.isActiveUserOfProduct(userId, queryArgs.get(0));
+            case "ACTIVE_USER_OF" ->
+                    repository.isActiveUserOfProduct(userId, queryArgs.get(0));
 
-            case "TRANSACTION_SUM_COMPARE" -> repository.compareTransactionSum(userId, queryArgs);
+            case "TRANSACTION_SUM_COMPARE" ->
+                    repository.compareTransactionSum(userId, queryArgs);
 
             case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" ->
                     repository.compareTransactionSumDepositWithdraw(userId, queryArgs);
