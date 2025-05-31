@@ -18,7 +18,7 @@ public class DynamicRecommendationRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Cacheable(value = "userOf", key = "#userId, #productType, #negate")
+    @Cacheable(value = "userOf", key = "#userId, #productType")
     public boolean isUserOfProduct(UUID userId, String productType) {
 
         String request = "SELECT EXISTS ( " +
