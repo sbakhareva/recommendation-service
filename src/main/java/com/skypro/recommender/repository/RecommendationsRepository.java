@@ -1,12 +1,14 @@
 package com.skypro.recommender.repository;
 
+import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.awt.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -105,18 +107,20 @@ public class RecommendationsRepository {
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
     @Cacheable(value = "userOf", key = "#userId")
-    public boolean checkIfUserUseProduct(UUID userId,
-                                         String productType) {
-        return jdbcTemplate.queryForObject(
-                "SELECT EXISTS ( " +
-                        "SELECT 1 " +
-                        "FROM transactions t " +
-                        "JOIN products p ON p.id = t.product_id " +
-                        "WHERE t.user_id = ? " +
-                        "AND p.type = ?)",
+    public boolean checkIfUserUsesProduct(UUID userId, String productType) {
+
+        String request = "SELECT EXISTS ( " +
+                "SELECT 1 " +
+                "FROM transactions t " +
+                "JOIN products p ON p.id = t.product_id " +
+                "WHERE t.user_id = ? " +
+                "AND p.type = ?)";
+
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                request,
                 Boolean.class,
                 userId,
-                productType);
+                productType));
     }
 
     /**
@@ -127,28 +131,27 @@ public class RecommendationsRepository {
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
     @Cacheable(value = "activeUser", key = "#userId")
-    public boolean checkIfUserIsActiveUserOfProduct(UUID userId,
-                                                    String productType) {
-        String request = "SELECT CASE WHEN COUNT(*) > 5 THEN true ELSE false END AS is_active " +
+    public boolean checkIfUserIsActive(UUID userId, String productType) {
+
+        String request = "SELECT COUNT(*) " +
                 "FROM transactions t " +
                 "JOIN products p ON p.id = t.product_id " +
                 "WHERE t.user_id = ? " +
                 "AND p.type = ? ";
-        return jdbcTemplate.queryForObject(
+
+        Integer count = jdbcTemplate.queryForObject(
                 request,
-                Boolean.class,
+                Integer.class,
                 userId,
                 productType);
+
+        return count != null && count >= 5;
     }
 
     /**
      * Метод, который проверяет сумму всех транзакций по конкретному продукту с константой, установленной в правиле
      *
-     * @param userId          идентификатор пользователя
-     * @param productType     тип продукта (DEBIT, CREDIT, SAVING, INVEST)
-     * @param transactionType тип транзакции (DEPOSIT, WITHDRAW)
-     * @param operator        оператор сравнения
-     * @param checksum        константная сумма для сравнения, прописанная в правиле
+     * @param userId идентификатор пользователя
      */
     @Cacheable(value = "sumCompare", key = "#userId")
     public boolean transactionSumCompare(UUID userId,

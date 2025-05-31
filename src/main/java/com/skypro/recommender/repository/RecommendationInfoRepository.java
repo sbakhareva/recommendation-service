@@ -10,8 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Репозиторий, который работает с базой данных recommendation-info
@@ -72,5 +71,34 @@ public class RecommendationInfoRepository {
         );
         recommendation.setRules(rules);
         return recommendation;
+    }
+
+
+    public List<RecommendationDTO> getAllRecommendations() {
+        Map<UUID, RecommendationDTO> recommendationMap = new HashMap<>();
+
+        String recommendationsSql = "SELECT id, name, description FROM recommendations";
+        jdbcTemplate.query(recommendationsSql, (rs) -> {
+            UUID recId = rs.getObject("id", UUID.class);
+            RecommendationDTO rec = new RecommendationDTO();
+            rec.setId(recId);
+            rec.setName(rs.getString("name"));
+            rec.setDescription(rs.getString("description"));
+            rec.setRules(new ArrayList<>());
+            recommendationMap.put(recId, rec);
+        });
+
+        String rulesSql = "SELECT id, query, arguments, negate, recommendation_id FROM rules";
+        List<Rule> rules = jdbcTemplate.query(rulesSql, new RuleRowMapper());
+
+        for (Rule rule : rules) {
+            UUID recId = rule.getRecommendation_id();
+            RecommendationDTO rec = recommendationMap.get(recId);
+            if (rec != null) {
+                rec.getRules().add(rule);
+            }
+        }
+
+        return new ArrayList<>(recommendationMap.values());
     }
 }

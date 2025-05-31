@@ -31,12 +31,11 @@ public class DynamicRulesRepository {
         String argumentsJson = new ObjectMapper().writeValueAsString(rule.getArguments());
         jdbcTemplate.update(
                 "INSERT INTO rules " +
-                        "(id, query, arguments, negate, recommendation_id) " +
-                        "VALUES (?, ?, ?, ?, ?)",
-                UUID.randomUUID(),
+                        "(query, arguments, negate, recommendation_id) " +
+                        "VALUES (?, ?, ?, ?)",
                 rule.getQuery(),
                 argumentsJson,
-                rule.isNegate(),
+                rule.getNegate(),
                 recommendationId
         );
     }

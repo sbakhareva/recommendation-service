@@ -1,7 +1,6 @@
 package com.skypro.recommender.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -12,17 +11,26 @@ import java.util.UUID;
  */
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Rule {
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private UUID id;
     private String query;
     private List<String> arguments;
-    private boolean negate;
+    private Boolean negate;
     @JsonIgnore
     private UUID recommendation_id;
+
+    public Rule(String query, List<String> arguments, Boolean negate, UUID recommendation_id) {
+        this.query = query;
+        this.arguments = arguments;
+        this.negate = negate;
+        this.recommendation_id = recommendation_id;
+    }
+
+    public void setId(UUID id) {
+        this.id = UUID.randomUUID();
+    }
 }
