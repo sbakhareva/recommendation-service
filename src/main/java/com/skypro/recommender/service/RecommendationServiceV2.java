@@ -1,6 +1,6 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.QueryObject;
 import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
@@ -18,7 +18,7 @@ public class RecommendationServiceV2 {
     private final DynamicRulesRepository dynamicRulesRepository;
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationInfoRepository recommendationInfoRepository;
-    private Map<Recommendation, List<Rule>> recommendationRules;
+    private Map<Recommendation, List<QueryObject>> recommendationRules;
 
     public RecommendationServiceV2(DynamicRulesRepository dynamicRulesRepository,
                                    RecommendationsRepository recommendationsRepository,
@@ -46,12 +46,12 @@ public class RecommendationServiceV2 {
     public List<Recommendation> getRecommendations(UUID userId) {
         List<Recommendation> suitableRecommendations = new ArrayList<>();
 
-        for (Map.Entry<Recommendation, List<Rule>> entry : recommendationRules.entrySet()) {
+        for (Map.Entry<Recommendation, List<QueryObject>> entry : recommendationRules.entrySet()) {
             Recommendation recommendation = entry.getKey();
-            List<Rule> rules = entry.getValue();
+            List<QueryObject> rules = entry.getValue();
 
             boolean allPassed = true;
-            for (Rule rule : rules) {
+            for (QueryObject rule : rules) {
                 boolean result = checkRules(userId, rule);
                 if (!result) {
                     allPassed = false;
@@ -65,25 +65,25 @@ public class RecommendationServiceV2 {
         return suitableRecommendations;
     }
 
-    private boolean checkRules(UUID userId, Rule rule) {
+    private boolean checkRules(UUID userId, QueryObject queryObject) {
         boolean result;
-        switch (rule.getQuery()) {
+        switch (queryObject.getQuery()) {
             case "USER_OF" ->
-                    result = recommendationsRepository.checkIfUserUseProduct(userId, rule.getArguments().get(0));
+                    result = recommendationsRepository.checkIfUserUseProduct(userId, queryObject.getArguments().get(0));
             case "ACTIVE_USER_OF" -> result = recommendationsRepository.checkIfUserIsActiveUserOfProduct(userId,
-                    rule.getArguments().get(0));
+                    queryObject.getArguments().get(0));
             case "TRANSACTION_SUM_COMPARE" -> result = recommendationsRepository.transactionSumCompare(userId,
-                    rule.getArguments().get(0),
-                    rule.getArguments().get(1),
-                    rule.getArguments().get(2),
-                    Integer.parseInt(rule.getArguments().get(3)));
+                    queryObject.getArguments().get(0),
+                    queryObject.getArguments().get(1),
+                    queryObject.getArguments().get(2),
+                    Integer.parseInt(queryObject.getArguments().get(3)));
             case "TRANSACTION_SUM_COMPARE_DEPOSIT_WITHDRAW" ->
                     result = recommendationsRepository.transactionSumCompareDepositWithdraw(userId,
-                            rule.getArguments().get(0),
-                            rule.getArguments().get(1));
+                            queryObject.getArguments().get(0),
+                            queryObject.getArguments().get(1));
             default -> result = false;
         }
-        System.out.println("Rule: " + rule.getQuery() + ", args: " + rule.getArguments() + ", result: ");
+        System.out.println("Rule: " + queryObject.getQuery() + ", args: " + queryObject.getArguments() + ", result: ");
         return result;
     }
 }

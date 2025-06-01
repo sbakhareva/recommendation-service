@@ -3,7 +3,7 @@ package com.skypro.recommender.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.QueryObject;
 import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -26,21 +26,21 @@ public class DynamicRulesRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void createRule(Rule rule, UUID recommendationId) throws JsonProcessingException {
-        String argumentsJson = objectMapper.writeValueAsString(rule.getArguments());
+    public void createRule(QueryObject queryObject, UUID recommendationId) throws JsonProcessingException {
+        String argumentsJson = objectMapper.writeValueAsString(queryObject.getArguments());
         jdbcTemplate.update(
                 "INSERT INTO rules " +
                         "(id, query, arguments, negate, recommendation_id) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 UUID.randomUUID(),
-                rule.getQuery(),
+                queryObject.getQuery(),
                 argumentsJson,
-                rule.getNegate(),
+                queryObject.getNegate(),
                 recommendationId
         );
     }
 
-    public List<Rule> getRules(UUID recommendationId) {
+    public List<QueryObject> getRules(UUID recommendationId) {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
                         "WHERE recommendation_id = ?",
@@ -57,10 +57,10 @@ public class DynamicRulesRepository {
         );
     }
 
-    public List<Rule> getAllRules() {
+    public List<QueryObject> getAllRules() {
         return jdbcTemplate.query(
                 "SELECT * FROM rules",
-                new BeanPropertyRowMapper<>(Rule.class)
+                new BeanPropertyRowMapper<>(QueryObject.class)
         );
     }
 }

@@ -2,7 +2,7 @@ package com.skypro.recommender.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.Recommendation;
-import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.QueryObject;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ public class DynamicRulesService {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    public Recommendation createRule(Rule rule, UUID recommendationId) {
+    public Recommendation createRule(QueryObject queryObject, UUID recommendationId) {
         try {
-            dynamicRulesRepository.createRule(rule, recommendationId);
+            dynamicRulesRepository.createRule(queryObject, recommendationId);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

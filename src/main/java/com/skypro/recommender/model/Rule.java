@@ -1,7 +1,6 @@
 package com.skypro.recommender.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Класс, описывающий динамические правила
+ * Класс, описывающий правила
  */
 @Getter
 @Setter
@@ -21,21 +20,12 @@ import java.util.UUID;
 public class Rule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)  //  генерация UUID на стороне БД или GenerationType.UUID генерация UUID на стороне Java
-    @JsonView(Views.Response.class)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @JsonView(Views.Request.class)
-    private String query;
+    private List<QueryObject> queryObjects;
 
-    @JsonView(Views.Request.class)
-    private List<String> arguments;
-
-    @JsonView(Views.Request.class)
-    private Boolean negate;
-
-    @ManyToOne
-    @JoinColumn(name = "Recommendation_Id")
+    @OneToOne(mappedBy = "rule")
     @JsonIgnore
-    private Recommendation product;
+    private Recommendation recommendation;
 }

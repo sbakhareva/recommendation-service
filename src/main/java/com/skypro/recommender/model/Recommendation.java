@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -17,18 +16,19 @@ import java.util.UUID;
 @Entity
 public class Recommendation {
 
-    @JsonView(Views.Request.class)
-    private String name;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Views.Request.class)
     private UUID id;
 
     @JsonView(Views.Request.class)
+    private String name;
+
+    @JsonView(Views.Request.class)
     private String description;
 
-    @OneToMany(mappedBy = "products")
-    @JsonIgnore
-    private List<Rule> rules;
+    @OneToOne(mappedBy = "recommendation")
+    @JoinColumn(name = "rule_id") // Recommendation владеет отношением
+    @JsonView(Views.Request.class)
+    private Rule rule;
 }

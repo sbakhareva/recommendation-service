@@ -1,6 +1,6 @@
 package com.skypro.recommender.repository;
 
-import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.QueryObject;
 import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,7 +59,7 @@ public class RecommendationInfoRepository {
                 },
                 id
         );
-        List<Rule> rules = jdbcTemplate.query(
+        List<QueryObject> rules = jdbcTemplate.query(
                 "SELECT * FROM rules WHERE recommendation_id = ?",
                 new RuleRowMapper(),
                 id
