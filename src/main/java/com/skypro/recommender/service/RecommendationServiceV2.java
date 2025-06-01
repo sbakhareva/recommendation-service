@@ -1,7 +1,7 @@
 package com.skypro.recommender.service;
 
 import com.skypro.recommender.model.Rule;
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
@@ -18,7 +18,7 @@ public class RecommendationServiceV2 {
     private final DynamicRulesRepository dynamicRulesRepository;
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationInfoRepository recommendationInfoRepository;
-    private Map<RecommendationDTO, List<Rule>> recommendationRules;
+    private Map<Recommendation, List<Rule>> recommendationRules;
 
     public RecommendationServiceV2(DynamicRulesRepository dynamicRulesRepository,
                                    RecommendationsRepository recommendationsRepository,
@@ -43,11 +43,11 @@ public class RecommendationServiceV2 {
                 dynamicRulesRepository.getRules(UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a")));
     }
 
-    public List<RecommendationDTO> getRecommendations(UUID userId) {
-        List<RecommendationDTO> suitableRecommendations = new ArrayList<>();
+    public List<Recommendation> getRecommendations(UUID userId) {
+        List<Recommendation> suitableRecommendations = new ArrayList<>();
 
-        for (Map.Entry<RecommendationDTO, List<Rule>> entry : recommendationRules.entrySet()) {
-            RecommendationDTO recommendation = entry.getKey();
+        for (Map.Entry<Recommendation, List<Rule>> entry : recommendationRules.entrySet()) {
+            Recommendation recommendation = entry.getKey();
             List<Rule> rules = entry.getValue();
 
             boolean allPassed = true;

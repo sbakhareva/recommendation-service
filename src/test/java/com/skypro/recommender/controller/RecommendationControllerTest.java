@@ -1,6 +1,6 @@
 package com.skypro.recommender.controller;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.service.RecommendationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class RecommendationControllerTest {
         String name = "рекомендация";
         UUID recommendationId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
         String description = "описание";
-        RecommendationDTO recommendation = new RecommendationDTO(name, recommendationId, description);
+        Recommendation recommendation = new Recommendation(name, recommendationId, description);
 
         when(recommendationService.getRecommendation(userId)).thenReturn(List.of(recommendation));
 

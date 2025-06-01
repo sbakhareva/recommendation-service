@@ -1,8 +1,7 @@
 package com.skypro.recommender.repository;
 
-import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -38,21 +37,21 @@ public class RecommendationInfoRepository {
                 id);
     }
 
-    public RecommendationDTO getRecommendation(UUID id) {
+    public Recommendation getRecommendation(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT id, name, description FROM recommendations WHERE id = ? ",
-                new BeanPropertyRowMapper<>(RecommendationDTO.class),
+                new BeanPropertyRowMapper<>(Recommendation.class),
                 id
         );
     }
 
-    public RecommendationInfo getRecommendationWithRules(UUID id) {
-        RecommendationInfo recommendation = jdbcTemplate.queryForObject(
+    public Recommendation getRecommendationWithRules(UUID id) {
+        Recommendation recommendation = jdbcTemplate.queryForObject(
                 "SELECT id, name, description " +
                         "FROM recommendations " +
                         "WHERE id = ? ",
                 (rs, rowNum) -> {
-                    RecommendationInfo rec = new RecommendationInfo();
+                    Recommendation rec = new Recommendation();
                     rec.setName(rs.getString("name"));
                     rec.setId(UUID.fromString(rs.getString("id")));
                     rec.setDescription(rs.getString("description"));

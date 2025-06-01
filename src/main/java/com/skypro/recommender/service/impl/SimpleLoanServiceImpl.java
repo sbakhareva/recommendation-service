@@ -1,6 +1,6 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -22,7 +22,7 @@ public class SimpleLoanServiceImpl implements RecommendationRuleSet {
     }
 
     @Override
-    public Optional<RecommendationDTO> getRecommendation(UUID userId) {
+    public Optional<Recommendation> getRecommendation(UUID userId) {
 
         UUID id = UUID.fromString("ab138afb-f3ba-4a93-b74f-0fcee86d447f");
 

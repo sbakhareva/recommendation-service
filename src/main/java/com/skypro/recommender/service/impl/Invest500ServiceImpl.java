@@ -1,6 +1,6 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -22,7 +22,7 @@ public class Invest500ServiceImpl implements RecommendationRuleSet {
     }
 
     @Override
-    public Optional<RecommendationDTO> getRecommendation(UUID userId) {
+    public Optional<Recommendation> getRecommendation(UUID userId) {
 
         UUID id = UUID.fromString("147f6a0f-3b91-413b-ab99-87f081d60d5a");
 

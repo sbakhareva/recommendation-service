@@ -1,14 +1,15 @@
 package com.skypro.recommender.controller;
 
-import com.skypro.recommender.model.RecommendationInfo;
-import com.skypro.recommender.model.Rule;
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skypro.recommender.model.Views;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * Контроллер для работы непосредственно с динамическими правилами: их сохранение, просмотр и удаление
@@ -25,19 +26,23 @@ public class DynamicRulesController {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    @PostMapping("/create/{recommendation_id}")
-    public RecommendationInfo createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
-        return dynamicRulesService.createRule(rule, recommendationId);
+    @PostMapping
+    @JsonView(Views.Response.class)
+    public ResponseEntity<Recommendation> addProduct(
+            @RequestBody @JsonView(Views.Request.class) Recommendation product) throws JsonProcessingException {
+        dynamicRulesService.createProduct(product);
+
+        return ResponseEntity.ok(product);
     }
 
-    @GetMapping("/get/{recommendation_id}")
-    public RecommendationInfo getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
-        return dynamicRulesService.getRecommendationWithRules(recommendationId);
-    }
-
-    @DeleteMapping("/delete/{rule_id}")
-    public ResponseEntity<Void> deleteRule(@PathVariable("rule_id") UUID ruleId) {
-        dynamicRulesService.deleteRule(ruleId);
+    @DeleteMapping("{product_id}")
+    public ResponseEntity<Void> removeProduct(@PathVariable("product_id") String productId) {
+        dynamicRulesService.deleteProductById(productId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Recommendation>> getAllProducts() {
+        return ResponseEntity.ok(dynamicRulesService.getAllRules());
     }
 }

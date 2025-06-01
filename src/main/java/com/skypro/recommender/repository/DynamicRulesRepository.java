@@ -35,7 +35,7 @@ public class DynamicRulesRepository {
                 UUID.randomUUID(),
                 rule.getQuery(),
                 argumentsJson,
-                rule.isNegate(),
+                rule.getNegate(),
                 recommendationId
         );
     }

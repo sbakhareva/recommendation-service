@@ -1,6 +1,6 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,13 +52,13 @@ class RecommendationServiceTest {
 
         UUID recommendationId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
 
-        RecommendationDTO recommendation = new RecommendationDTO("рекомендация", recommendationId, "описание");
+        Recommendation recommendation = new Recommendation("рекомендация", recommendationId, "описание");
 
         when(invest500Service.getRecommendation(userId)).thenReturn(Optional.of(recommendation));
         when(topSavingService.getRecommendation(userId)).thenReturn(Optional.empty());
         when(simpleLoanService.getRecommendation(userId)).thenReturn(Optional.empty());
 
-        List<RecommendationDTO> response = recommendationService.getRecommendation(userId);
+        List<Recommendation> response = recommendationService.getRecommendation(userId);
         assertNotNull(response);
         assertTrue(response.contains(recommendation));
         assertEquals(1,response.size());

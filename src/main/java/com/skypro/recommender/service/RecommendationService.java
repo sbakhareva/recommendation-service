@@ -1,6 +1,6 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.Recommendation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +29,7 @@ public class RecommendationService {
         this.dataSource = dataSource;
     }
 
-    public List<RecommendationDTO> getRecommendation(UUID userId) {
+    public List<Recommendation> getRecommendation(UUID userId) {
 
         try (Connection conn = dataSource.getConnection()) {
             logger.info("########Connection established!########" );
