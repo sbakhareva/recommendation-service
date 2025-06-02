@@ -28,11 +28,17 @@ public class DynamicRulesController {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    @PostMapping("/create/{recommendation_id}")
+    // Оставила для себя для удобства
+    @PostMapping("/{recommendation_id}")
     public RecommendationInfo createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
         return dynamicRulesService.createRuleByRecommendationId(rule, recommendationId);
     }
 
+    /**
+     * Метод, создающий в базе данных новую рекомендацию с правилами
+     * @param recommendation рекомендация вместе со списком правил
+     * @return созданная рекомендация со списком правил
+     */
     @PostMapping
     public RecommendationInfo createRecommendationWithRules(@RequestBody Recommendation recommendation) {
         try {
