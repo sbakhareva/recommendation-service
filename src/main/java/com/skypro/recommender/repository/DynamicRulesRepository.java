@@ -35,7 +35,7 @@ public class DynamicRulesRepository {
                         "VALUES (?, ?, ?, ?)",
                 rule.getQuery(),
                 argumentsJson,
-                rule.getNegate(),
+                rule.isNegate(),
                 recommendationId
         );
     }

@@ -42,7 +42,6 @@ public class RecommendationServiceV2 {
         for (RecommendationDTO recommendation : recommendations) {
             if (recommendation.getRules() == null || recommendation.getRules().isEmpty()) {
                 suitableRecommendations.add(recommendation);
-                continue;
             }
 
             List<Rule> rules = recommendation.getRules();
@@ -54,6 +53,8 @@ public class RecommendationServiceV2 {
                 if (!result) {
                     allPassed = false;
                     break;
+                } else {
+                    dynamicRulesRepository.incrementCounter(rule.getId());
                 }
             }
             if (allPassed) {
@@ -92,6 +93,6 @@ public class RecommendationServiceV2 {
         if (result) {
             dynamicRulesRepository.incrementCounter(rule.getId());
         }
-        return rule.getNegate() != result;
+        return rule.isNegate() != result;
     }
 }

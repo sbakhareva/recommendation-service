@@ -19,11 +19,11 @@ public class Rule {
     private UUID id;
     private String query;
     private List<String> arguments;
-    private Boolean negate;
+    private boolean negate;
     @JsonIgnore
     private UUID recommendation_id;
 
-    public Rule(String query, List<String> arguments, Boolean negate, UUID recommendation_id) {
+    public Rule(String query, List<String> arguments, boolean negate, UUID recommendation_id) {
         this.query = query;
         this.arguments = arguments;
         this.negate = negate;

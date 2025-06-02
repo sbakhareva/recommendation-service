@@ -1,10 +1,12 @@
 package com.skypro.recommender.controller;
 
-import com.skypro.recommender.model.RecommendationsResponse;
+import com.skypro.recommender.model.dto.RecommendationDTO;
 import com.skypro.recommender.service.RecommendationService;
 import com.skypro.recommender.service.RecommendationServiceV2;
+import lombok.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,4 +36,18 @@ public class RecommendationController {
                 recommendationServiceV2.getRecommendations(userId));
     }
 
+}
+
+/**
+ * Класс, описывающий ответ сервера пользователю, включающий переданный user_id (необходимо по требуемому API)
+ */
+@Setter
+@Getter
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+class RecommendationsResponse {
+
+    private UUID userId;
+    private List<RecommendationDTO> recommendations;
 }
