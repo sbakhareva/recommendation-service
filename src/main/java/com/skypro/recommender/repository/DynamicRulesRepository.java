@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
+import com.skypro.recommender.model.StatisticItem;
 import com.skypro.recommender.utils.RuleRowMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,7 +14,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -43,7 +46,7 @@ public class DynamicRulesRepository {
         );
     }
 
-    //@Cacheable(value = "getRules", key = "#recommendationId")
+    @Cacheable(value = "getRules", key = "#recommendationId")
     public List<Rule> getRules(UUID recommendationId) {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
@@ -61,7 +64,7 @@ public class DynamicRulesRepository {
         );
     }
 
-    //@Cacheable(value = "getAllRules", key = "777")
+    @Cacheable("allRules")
     public List<Rule> getAllRules() {
         return jdbcTemplate.query(
                 "SELECT * FROM rules",
@@ -75,16 +78,18 @@ public class DynamicRulesRepository {
                 ruleId);
     }
 
-    public List<RuleStatistics> getRulesStatistics() {
+    public RuleStatistics getRulesStatistics() {
         String request = "SELECT id AS ruleId, " +
                 "counter AS count " +
                 "FROM rules";
-        return jdbcTemplate.query(
-                request, (stats, rowNum) -> new RuleStatistics(
-                        UUID.fromString(stats.getString("id")),
-                        stats.getInt("counter"
-                        ))
+        List<StatisticItem> stats =  jdbcTemplate.query(
+                request, (s, rowNum) -> {
+                    return new StatisticItem(
+                            UUID.fromString(s.getString("id")),
+                            s.getInt("counter"));
+                }
         );
+        return new RuleStatistics(stats);
     }
 
     public void resetStatistics() {

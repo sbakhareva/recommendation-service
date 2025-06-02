@@ -43,12 +43,12 @@ public class DynamicRulesController {
     }
 
     @GetMapping("/stats")
-    public List<RuleStatistics> getStats() {
+    public RuleStatistics getStats() {
         return dynamicRulesService.getRuleStatistics();
     }
 
     @PostMapping("/reset_stats")
-    public List<RuleStatistics> resetStats() {
+    public RuleStatistics resetStats() {
         dynamicRulesService.resetStatistics();
         return dynamicRulesService.getRuleStatistics();
     }

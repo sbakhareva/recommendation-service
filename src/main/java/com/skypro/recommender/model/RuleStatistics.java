@@ -2,6 +2,7 @@ package com.skypro.recommender.model;
 
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -12,6 +13,6 @@ import java.util.UUID;
 @ToString
 public class RuleStatistics {
 
-    UUID ruleId;
-    int count;
+    List<StatisticItem> stats;
 }
+
