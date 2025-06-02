@@ -16,6 +16,7 @@ import java.util.UUID;
 @ToString
 public class Rule {
 
+    @JsonIgnore
     private UUID id;
     private String query;
     private List<String> arguments;
