@@ -5,7 +5,6 @@ import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
-import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

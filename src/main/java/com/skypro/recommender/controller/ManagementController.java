@@ -3,6 +3,7 @@ package com.skypro.recommender.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.configuration.CacheConfig;
 import lombok.*;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +18,16 @@ import java.nio.file.Paths;
 public class ManagementController {
 
     private final CacheConfig cacheConfig;
+    private final BuildProperties buildProperties;
 
-    public ManagementController(CacheConfig cacheConfig) {
+    public ManagementController(CacheConfig cacheConfig, BuildProperties buildProperties) {
         this.cacheConfig = cacheConfig;
+        this.buildProperties = buildProperties;
     }
 
     @GetMapping("/info")
-    public ServiceInfo getManagementInfo() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("target/classes/build-info.json")));
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(json, ServiceInfo.class);
+    public ServiceInfo getManagementInfo() {
+        return new ServiceInfo(buildProperties.getName(), buildProperties.getVersion());
     }
 
     @PostMapping("/clear-caches")

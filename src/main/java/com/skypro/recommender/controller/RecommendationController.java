@@ -24,16 +24,13 @@ public class RecommendationController {
         this.recommendationServiceV2 = recommendationServiceV2;
     }
 
-//    @GetMapping("/{user_id}")
-//    public RecommendationsResponse getRecommendations(@PathVariable ("user_id") UUID userId) {
-//        return new RecommendationsResponse(userId,
-//                recommendationService.getRecommendations(userId));
-//    }
 
     @GetMapping("/{user_id}")
     public RecommendationsResponse getRecommendation(@PathVariable("user_id") UUID userId) {
         return new RecommendationsResponse(userId,
-                recommendationServiceV2.getRecommendations(userId));
+                recommendationServiceV2.getRecommendations(userId)
+                //recommendationService.getRecommendations(userId)
+        );
     }
 
 }
