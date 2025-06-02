@@ -130,7 +130,6 @@ public class RecommendationsRepository {
      * @param userId      идентификатор пользователя
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
-    //@Cacheable(value = "activeUser", key = "#userId")
     public boolean checkIfUserIsActive(UUID userId, String productType) {
 
         String request = "SELECT COUNT(*) " +
@@ -153,7 +152,6 @@ public class RecommendationsRepository {
      *
      * @param userId идентификатор пользователя
      */
-   // @Cacheable(value = "sumCompare", key = "#userId")
     public boolean transactionSumCompare(UUID userId,
                                          String productType,
                                          String transactionType,
@@ -210,7 +208,6 @@ public class RecommendationsRepository {
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      * @param operator    оператор сравнения
      */
-    //@Cacheable(value = "compareDepositWithdraw", key = "#userId")
     public boolean transactionSumCompareDepositWithdraw(UUID userId,
                                                         String productType,
                                                         String operator) {

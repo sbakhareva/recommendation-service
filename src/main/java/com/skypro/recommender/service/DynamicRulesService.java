@@ -43,7 +43,7 @@ public class DynamicRulesService {
         return dynamicRulesRepository.getAllRules();
     }
 
-    public List<RuleStatistics> getRuleStatistics() {
+    public RuleStatistics getRuleStatistics() {
         return dynamicRulesRepository.getRulesStatistics();
     }
 
