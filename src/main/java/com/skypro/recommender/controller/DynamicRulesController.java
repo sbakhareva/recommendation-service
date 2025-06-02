@@ -47,5 +47,11 @@ public class DynamicRulesController {
     public List<RuleStatistics> getStats() {
         return dynamicRulesService.getRuleStatistics();
     }
+
+    @PostMapping("/reset_stats")
+    public List<RuleStatistics> resetStats() {
+        dynamicRulesService.resetStatistics();
+        return dynamicRulesService.getRuleStatistics();
+    }
 }
 

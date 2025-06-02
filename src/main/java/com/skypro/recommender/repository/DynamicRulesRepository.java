@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,16 +32,18 @@ public class DynamicRulesRepository {
         String argumentsJson = new ObjectMapper().writeValueAsString(rule.getArguments());
         jdbcTemplate.update(
                 "INSERT INTO rules " +
-                        "(query, arguments, negate, recommendation_id) " +
-                        "VALUES (?, ?, ?, ?)",
+                        "(id, query, arguments, negate, recommendation_id, counter) " +
+                        "VALUES (?, ?, ?, ?, ?)",
+                UUID.randomUUID(),
                 rule.getQuery(),
                 argumentsJson,
-                rule.isNegate(),
-                recommendationId
+                rule.getNegate(),
+                recommendationId,
+                0
         );
     }
 
-    @Cacheable(value = "getRules", key = "#recommendationId")
+    //@Cacheable(value = "getRules", key = "#recommendationId")
     public List<Rule> getRules(UUID recommendationId) {
         return jdbcTemplate.query(
                 "SELECT * FROM rules " +
@@ -58,7 +61,7 @@ public class DynamicRulesRepository {
         );
     }
 
-    @Cacheable(value = "getAllRules", key = "777")
+    //@Cacheable(value = "getAllRules", key = "777")
     public List<Rule> getAllRules() {
         return jdbcTemplate.query(
                 "SELECT * FROM rules",
@@ -67,8 +70,9 @@ public class DynamicRulesRepository {
     }
 
     public void incrementCounter(UUID ruleId) {
-        String sql = "UPDATE rules SET counter = counter + 1 WHERE id = ?";
-        jdbcTemplate.update(sql, ruleId);
+        jdbcTemplate.update(
+                "UPDATE rules SET counter = (counter + 1) WHERE id = ?",
+                ruleId);
     }
 
     public List<RuleStatistics> getRulesStatistics() {
@@ -80,6 +84,12 @@ public class DynamicRulesRepository {
                         UUID.fromString(stats.getString("id")),
                         stats.getInt("counter"
                         ))
+        );
+    }
+
+    public void resetStatistics() {
+        jdbcTemplate.update(
+                "UPDATE rules SET counter = 0"
         );
     }
 }

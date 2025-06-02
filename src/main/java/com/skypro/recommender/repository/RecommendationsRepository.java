@@ -106,7 +106,7 @@ public class RecommendationsRepository {
      * @param userId      идентификатор пользователя
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
-    @Cacheable(value = "userOf", key = "#userId")
+    //@Cacheable(value = "userOf", key = "#userId")
     public boolean checkIfUserUsesProduct(UUID userId, String productType) {
 
         String request = "SELECT EXISTS ( " +
@@ -130,7 +130,7 @@ public class RecommendationsRepository {
      * @param userId      идентификатор пользователя
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      */
-    @Cacheable(value = "activeUser", key = "#userId")
+    //@Cacheable(value = "activeUser", key = "#userId")
     public boolean checkIfUserIsActive(UUID userId, String productType) {
 
         String request = "SELECT COUNT(*) " +
@@ -153,7 +153,7 @@ public class RecommendationsRepository {
      *
      * @param userId идентификатор пользователя
      */
-    @Cacheable(value = "sumCompare", key = "#userId")
+   // @Cacheable(value = "sumCompare", key = "#userId")
     public boolean transactionSumCompare(UUID userId,
                                          String productType,
                                          String transactionType,
@@ -196,11 +196,11 @@ public class RecommendationsRepository {
                 productType,
                 transactionType
         };
-        return jdbcTemplate.queryForObject(
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
                 request,
                 Boolean.class,
                 params
-        );
+        ));
     }
 
     /**
@@ -210,7 +210,7 @@ public class RecommendationsRepository {
      * @param productType тип продукта (DEBIT, CREDIT, SAVING, INVEST)
      * @param operator    оператор сравнения
      */
-    @Cacheable(value = "compareDepositWithdraw", key = "#userId")
+    //@Cacheable(value = "compareDepositWithdraw", key = "#userId")
     public boolean transactionSumCompareDepositWithdraw(UUID userId,
                                                         String productType,
                                                         String operator) {
@@ -296,11 +296,11 @@ public class RecommendationsRepository {
                 userId,
                 productType
         };
-        return jdbcTemplate.queryForObject(
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
                 request,
                 Boolean.class,
                 params
-        );
+        ));
     }
 
     public UUID getUserIdByUsername(String username) throws EmptyResultDataAccessException {

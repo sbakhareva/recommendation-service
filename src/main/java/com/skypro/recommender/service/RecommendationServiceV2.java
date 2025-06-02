@@ -6,6 +6,7 @@ import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -31,6 +32,7 @@ public class RecommendationServiceV2 {
 
     /**
      * Метод, который формирует список рекомендаций для пользователя по переданному user_id
+     *
      * @param userId идентификатор пользователя
      * @return список рекомендаций для конкретного пользователя
      */
@@ -53,8 +55,6 @@ public class RecommendationServiceV2 {
                 if (!result) {
                     allPassed = false;
                     break;
-                } else {
-                    dynamicRulesRepository.incrementCounter(rule.getId());
                 }
             }
             if (allPassed) {
@@ -66,19 +66,19 @@ public class RecommendationServiceV2 {
 
     /**
      * Метод, проверяющий, подходит ли пользователь под критерии, заданные динамическими правилами в базе данных
+     *
      * @param userId идентификатор пользователя
-     * @param rule динамическое правило, из которого мы получаем критерии для проверки пользователя
+     * @param rule   динамическое правило, из которого мы получаем критерии для проверки пользователя
      * @return boolean-результат, прошло ли правило проверку
      */
+    @Transactional
     private boolean checkRules(UUID userId, Rule rule) {
 
         List<String> arguments = rule.getArguments();
         boolean result = switch (rule.getQuery()) {
-            case "USER_OF" ->
-                recommendationsRepository.checkIfUserUsesProduct(userId, arguments.get(0));
-            case "ACTIVE_USER_OF" ->
-                recommendationsRepository.checkIfUserIsActive(userId,
-                        arguments.get(0));
+            case "USER_OF" -> recommendationsRepository.checkIfUserUsesProduct(userId, arguments.get(0));
+            case "ACTIVE_USER_OF" -> recommendationsRepository.checkIfUserIsActive(userId,
+                    arguments.get(0));
             case "TRANSACTION_SUM_COMPARE" -> recommendationsRepository.transactionSumCompare(userId,
                     arguments.get(0),
                     arguments.get(1),
@@ -93,6 +93,6 @@ public class RecommendationServiceV2 {
         if (result) {
             dynamicRulesRepository.incrementCounter(rule.getId());
         }
-        return rule.isNegate() != result;
+        return rule.getNegate() != result;
     }
 }

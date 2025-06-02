@@ -19,7 +19,7 @@ public class Rule {
     private UUID id;
     private String query;
     private List<String> arguments;
-    private boolean negate;
+    private Boolean negate;
     @JsonIgnore
     private UUID recommendation_id;
 
@@ -28,9 +28,5 @@ public class Rule {
         this.arguments = arguments;
         this.negate = negate;
         this.recommendation_id = recommendation_id;
-    }
-
-    public void setId(UUID id) {
-        this.id = UUID.randomUUID();
     }
 }

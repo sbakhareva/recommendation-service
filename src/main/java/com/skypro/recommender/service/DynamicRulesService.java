@@ -46,4 +46,8 @@ public class DynamicRulesService {
     public List<RuleStatistics> getRuleStatistics() {
         return dynamicRulesRepository.getRulesStatistics();
     }
+
+    public void resetStatistics() {
+        dynamicRulesRepository.resetStatistics();
+    }
 }

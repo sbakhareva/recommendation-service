@@ -24,7 +24,7 @@ public class RecommendationInfoRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Cacheable(value = "getRecName", key = "#id")
+    //@Cacheable(value = "getRecName", key = "#id")
     public String getRecommendationName(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT name FROM recommendations WHERE id = ?",
@@ -32,7 +32,7 @@ public class RecommendationInfoRepository {
                 id);
     }
 
-    @Cacheable(value = "getRecDescription", key = "#id")
+    //@Cacheable(value = "getRecDescription", key = "#id")
     public String getRecommendationDescription(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT description FROM recommendations WHERE id = ?",
@@ -40,7 +40,7 @@ public class RecommendationInfoRepository {
                 id);
     }
 
-    @Cacheable(value = "recommendation", key = "#id")
+    //@Cacheable(value = "recommendation", key = "#id")
     public RecommendationDTO getRecommendation(UUID id) {
         return jdbcTemplate.queryForObject(
                 "SELECT id, name, description FROM recommendations WHERE id = ? ",
