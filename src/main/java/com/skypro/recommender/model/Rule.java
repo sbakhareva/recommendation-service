@@ -23,6 +23,7 @@ public class Rule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @OneToMany(mappedBy = "rule")
     private List<QueryObject> queryObjects;
 
     @OneToOne(mappedBy = "rule")

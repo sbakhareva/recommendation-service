@@ -1,6 +1,8 @@
 package com.skypro.recommender.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.UUID;
 public class QueryObject {
 
     @JsonView(Views.Response.class)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @JsonView(Views.Request.class)
@@ -28,4 +31,9 @@ public class QueryObject {
 
     @JsonView(Views.Request.class)
     private Boolean negate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rule_id")
+    @JsonIgnore
+    private Rule rule;
 }

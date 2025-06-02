@@ -1,6 +1,5 @@
 package com.skypro.recommender.repository;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.recommender.model.QueryObject;
@@ -17,7 +16,7 @@ import java.util.UUID;
  * Репозиторий, который работает с базой данных recommendation-info, в основном с таблицей rules
  */
 @Repository
-public class DynamicRulesRepository {
+public class DynamicRulesRepository{
 
     private final JdbcTemplate jdbcTemplate;
     private static final ObjectMapper objectMapper = new ObjectMapper();

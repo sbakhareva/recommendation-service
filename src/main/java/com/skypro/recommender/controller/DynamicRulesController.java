@@ -1,10 +1,8 @@
 package com.skypro.recommender.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.Views;
 import com.skypro.recommender.model.Recommendation;
-import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,30 +17,27 @@ import java.util.List;
 public class DynamicRulesController {
 
     private final DynamicRulesService dynamicRulesService;
-    private final RecommendationInfoRepository recommendationInfoRepository;
 
-    public DynamicRulesController(DynamicRulesService dynamicRulesService, RecommendationInfoRepository recommendationInfoRepository) {
+    public DynamicRulesController(DynamicRulesService dynamicRulesService) {
         this.dynamicRulesService = dynamicRulesService;
-        this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
     @PostMapping
     @JsonView(Views.Response.class)
-    public ResponseEntity<Recommendation> addProduct(
-            @RequestBody @JsonView(Views.Request.class) Recommendation product) throws JsonProcessingException {
-        dynamicRulesService.createProduct(product);
+    public ResponseEntity<Recommendation> addRule(
+            @RequestBody @JsonView(Views.Request.class) Recommendation rule) {
 
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(dynamicRulesService.createRule(rule);
     }
 
     @DeleteMapping("{product_id}")
-    public ResponseEntity<Void> removeProduct(@PathVariable("product_id") String productId) {
-        dynamicRulesService.deleteProductById(productId);
+    public ResponseEntity<Void> removeProduct(@PathVariable("product_id") String ruleId) {
+        dynamicRulesService.deleteRule(ruleId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Recommendation>> getAllProducts() {
+    public ResponseEntity<List<Recommendation>> getAllRules() {
         return ResponseEntity.ok(dynamicRulesService.getAllRules());
     }
 }

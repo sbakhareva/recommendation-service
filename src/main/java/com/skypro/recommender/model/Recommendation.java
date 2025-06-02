@@ -28,7 +28,6 @@ public class Recommendation {
     private String description;
 
     @OneToOne(mappedBy = "recommendation")
-    @JoinColumn(name = "rule_id") // Recommendation владеет отношением
     @JsonView(Views.Request.class)
     private Rule rule;
 }
