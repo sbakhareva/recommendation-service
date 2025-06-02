@@ -1,8 +1,10 @@
 package com.skypro.recommender.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.service.DynamicRulesService;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +30,33 @@ public class DynamicRulesController {
 
     @PostMapping("/create/{recommendation_id}")
     public RecommendationInfo createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
-        return dynamicRulesService.createRule(rule, recommendationId);
+        return dynamicRulesService.createRuleByRecommendationId(rule, recommendationId);
     }
 
-    @GetMapping("/get/{recommendation_id}")
+    @PostMapping
+    public RecommendationInfo createRecommendationWithRules(@RequestBody Recommendation recommendation) {
+        try {
+            recommendationInfoRepository.createRecommendationWithRules(recommendation);
+        } catch (JsonProcessingException e) {
+            System.out.println("Ошибка сериализации списка аргументов");
+        }
+        return recommendationInfoRepository.getRecommendationWithRules(recommendation.getId());
+    }
+
+    @GetMapping("/{recommendation_id}")
     public RecommendationInfo getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
         return dynamicRulesService.getRecommendationWithRules(recommendationId);
     }
 
-    @DeleteMapping("/delete/{rule_id}")
+    @DeleteMapping("/{rule_id}")
     public ResponseEntity<Void> deleteRule(@PathVariable("rule_id") UUID ruleId) {
         dynamicRulesService.deleteRule(ruleId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public List<Rule> getAllRules() {
+        return dynamicRulesService.getAllRules();
     }
 
     @GetMapping("/stats")

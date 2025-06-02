@@ -1,20 +1,9 @@
 package com.skypro.recommender.service.impl;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
-import com.skypro.recommender.repository.RecommendationInfoRepository;
-import com.skypro.recommender.repository.RecommendationsRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-import java.util.UUID;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class SimpleLoanServiceImplTest {
@@ -51,7 +40,7 @@ class SimpleLoanServiceImplTest {
 //
 //        when(recommendationsRepository.checkIfUserHasTransactionTypeCredit(userId)).thenReturn(true);
 //
-//        Optional<RecommendationDTO> response = simpleLoanService.getRecommendation(userId);
+//        Optional<Recommendation> response = simpleLoanService.getRecommendation(userId);
 //        assertThat(response).isEqualTo(Optional.empty());
 //    }
 }

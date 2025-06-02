@@ -1,22 +1,12 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RecommendationServiceTest {
@@ -52,13 +42,13 @@ class RecommendationServiceTest {
 //
 //        UUID recommendationId = UUID.fromString("59efc529-2fff-41af-baff-90ccd7402925");
 //
-//        RecommendationDTO recommendation = new RecommendationDTO("рекомендация", recommendationId, "описание");
+//        Recommendation recommendation = new Recommendation("рекомендация", recommendationId, "описание");
 //
 //        when(invest500Service.getRecommendation(userId)).thenReturn(Optional.of(recommendation));
 //        when(topSavingService.getRecommendation(userId)).thenReturn(Optional.empty());
 //        when(simpleLoanService.getRecommendation(userId)).thenReturn(Optional.empty());
 //
-//        List<RecommendationDTO> response = recommendationService.getRecommendations(userId);
+//        List<Recommendation> response = recommendationService.getRecommendations(userId);
 //        assertNotNull(response);
 //        assertTrue(response.contains(recommendation));
 //        assertEquals(1,response.size());

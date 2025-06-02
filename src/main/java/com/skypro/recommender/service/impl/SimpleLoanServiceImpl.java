@@ -1,6 +1,7 @@
 package com.skypro.recommender.service.impl;
 
 import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.RecommendationDTOMapper;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -14,11 +15,14 @@ public class SimpleLoanServiceImpl implements RecommendationRuleSet {
 
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationInfoRepository recommendationInfoRepository;
+    private final RecommendationDTOMapper recommendationDTOMapper;
 
     public SimpleLoanServiceImpl(RecommendationsRepository recommendationsRepository,
-                                 RecommendationInfoRepository recommendationInfoRepository) {
+                                 RecommendationInfoRepository recommendationInfoRepository,
+                                 RecommendationDTOMapper recommendationDTOMapper) {
         this.recommendationsRepository = recommendationsRepository;
         this.recommendationInfoRepository = recommendationInfoRepository;
+        this.recommendationDTOMapper = recommendationDTOMapper;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class SimpleLoanServiceImpl implements RecommendationRuleSet {
         if (!recommendationsRepository.checkIfUserHasTransactionTypeCredit(userId) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId)) &&
                 recommendationsRepository.getTotalDebitWithdraw(userId) > 100000) {
-            return Optional.of(recommendationInfoRepository.getRecommendation(id));
+            return Optional.of(recommendationDTOMapper.apply(recommendationInfoRepository.getRecommendation(id)));
         }
         return Optional.empty();
     }

@@ -1,6 +1,5 @@
 package com.skypro.recommender.model;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
 import lombok.*;
 
 import java.util.List;

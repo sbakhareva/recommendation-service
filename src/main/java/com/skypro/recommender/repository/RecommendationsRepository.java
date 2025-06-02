@@ -1,14 +1,10 @@
 package com.skypro.recommender.repository;
 
-import com.skypro.recommender.model.dto.RecommendationDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.awt.*;
-import java.util.List;
 import java.util.UUID;
 
 /**
