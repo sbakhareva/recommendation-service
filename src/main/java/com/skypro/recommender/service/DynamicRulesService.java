@@ -6,6 +6,7 @@ import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,5 +33,9 @@ public class DynamicRulesService {
 
     public void deleteRule(String ruleId) {
         dynamicRulesRepository.deleteRule(UUID.fromString (ruleId));
+    }
+
+    public List<Recommendation> getAllRules() {
+
     }
 }

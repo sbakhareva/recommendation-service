@@ -30,3 +30,4 @@ public class Rule {
     @JsonIgnore
     private Recommendation recommendation;
 }
+
