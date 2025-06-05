@@ -1,9 +1,11 @@
 package com.skypro.recommender.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.Views;
 import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.service.DynamicRulesService;
+import com.skypro.recommender.service.RecommendationRuleSet;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +27,7 @@ public class DynamicRulesController {
     @PostMapping
     @JsonView(Views.Response.class)
     public ResponseEntity<Recommendation> addRule(
-            @RequestBody @JsonView(Views.Request.class) Recommendation recommendation) {
+            @RequestBody @JsonView(Views.Request.class)Recommendation recommendation) {
 
         return ResponseEntity.ok(dynamicRulesService.createRule(recommendation));
     }
