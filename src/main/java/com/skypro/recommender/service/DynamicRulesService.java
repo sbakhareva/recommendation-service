@@ -26,8 +26,11 @@ public class DynamicRulesService {
     public Recommendation createRule(Recommendation recommendation) {
 
         Rule rule = recommendation.getRule();
+        recommendation.setRule(rule);
+        rule.setRecommendation(recommendation);
+
         if (rule != null) {
-            rule.getQueryObjects().forEach(qo -> qo.setRule(rule));
+            rule.getQueryObjects().forEach(q -> q.setRule(rule));
         }
 
         return recommendationRepository.save(recommendation);
