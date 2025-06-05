@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Rule {
     private UUID id;
 
     @OneToMany(mappedBy = "rule")
-    private List<QueryObject> queryObjects;
+    private List<QueryObject> queryObjects = new ArrayList<>();
 
     @OneToOne(mappedBy = "rule")
     @JsonIgnore

@@ -1,9 +1,8 @@
 package com.skypro.recommender.service;
 
 import com.skypro.recommender.model.Recommendation;
-import com.skypro.recommender.model.QueryObject;
-import com.skypro.recommender.repository.DynamicRulesRepository;
-import com.skypro.recommender.repository.RecommendationInfoRepository;
+import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,19 +11,26 @@ import java.util.UUID;
 @Service
 public class DynamicRulesService {
 
-    private final DynamicRulesRepository dynamicRulesRepository;
-    private final RecommendationInfoRepository recommendationInfoRepository;
+    private final RecommendationRepository recommendationRepository;
+    private final RuleRepository ruleRepository;
+    private final QueryObjectRepository queryObjectRepository;
 
-    public DynamicRulesService(DynamicRulesRepository dynamicRulesRepository, RecommendationInfoRepository recommendationInfoRepository) {
-        this.dynamicRulesRepository = dynamicRulesRepository;
-        this.recommendationInfoRepository = recommendationInfoRepository;
+    public DynamicRulesService(RecommendationRepository recommendationRepository,
+                               RuleRepository ruleRepository,
+                               QueryObjectRepository queryObjectRepository) {
+        this.recommendationRepository = recommendationRepository;
+        this.ruleRepository = ruleRepository;
+        this.queryObjectRepository = queryObjectRepository;
     }
 
-    public Recommendation createRule(Recommendation rule) {
+    public Recommendation createRule(Recommendation recommendation) {
 
-            dynamicRulesRepository.createRule();
+        Rule rule = recommendation.getRule();
+        if (rule != null) {
+            rule.getQueryObjects().forEach(qo -> qo.setRule(rule));
+        }
 
-        return recommendationInfoRepository.getRecommendationWithRules(recommendationId);
+        return recommendationRepository.save(recommendation);
     }
 
     public Recommendation getRecommendationWithRules(UUID recommendationId) {

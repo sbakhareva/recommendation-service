@@ -25,9 +25,9 @@ public class DynamicRulesController {
     @PostMapping
     @JsonView(Views.Response.class)
     public ResponseEntity<Recommendation> addRule(
-            @RequestBody @JsonView(Views.Request.class) Recommendation rule) {
+            @RequestBody @JsonView(Views.Request.class) Recommendation recommendation) {
 
-        return ResponseEntity.ok(dynamicRulesService.createRule(rule);
+        return ResponseEntity.ok(dynamicRulesService.createRule(recommendation));
     }
 
     @DeleteMapping("{product_id}")
