@@ -27,7 +27,7 @@ class SimpleLoanServiceImplTest {
 //        when(recommendationsRepository.getTotalDebitDeposit(userId)).thenReturn(133000);
 //        when(recommendationsRepository.getTotalDebitWithdraw(userId)).thenReturn(123000);
 //
-//        String response = String.valueOf(simpleLoanService.getRecommendation(userId));
+//        String response = String.valueOf(simpleLoanService.getRecommendationByDynamicRules(userId));
 //        assertThat(response).contains("рекомендация");
 //        assertThat(response).contains("описание");
 //        assertThat(response).contains(recommendationId.toString());
@@ -40,7 +40,7 @@ class SimpleLoanServiceImplTest {
 //
 //        when(recommendationsRepository.checkIfUserHasTransactionTypeCredit(userId)).thenReturn(true);
 //
-//        Optional<Recommendation> response = simpleLoanService.getRecommendation(userId);
+//        Optional<Recommendation> response = simpleLoanService.getRecommendationByDynamicRules(userId);
 //        assertThat(response).isEqualTo(Optional.empty());
 //    }
 }

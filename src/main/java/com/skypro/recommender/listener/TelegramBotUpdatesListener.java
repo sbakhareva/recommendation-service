@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.GetUpdates;
 import com.pengrad.telegrambot.response.GetUpdatesResponse;
 import com.skypro.recommender.service.MessagingService;
-import com.skypro.recommender.service.RecommendationService;
+import com.skypro.recommender.service.StaticRecommendationService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +21,11 @@ public class TelegramBotUpdatesListener {
     private int lastUpdateId = 0;
 
     private final TelegramBot telegramBot;
-    private final RecommendationService recommendationService;
+    private final StaticRecommendationService recommendationService;
     private final MessagingService messagingService;
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot,
-                                      RecommendationService recommendationService,
+                                      StaticRecommendationService recommendationService,
                                       MessagingService messagingService) {
         this.telegramBot = telegramBot;
         this.recommendationService = recommendationService;

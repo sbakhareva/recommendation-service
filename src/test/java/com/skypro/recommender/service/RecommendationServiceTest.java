@@ -24,13 +24,13 @@ class RecommendationServiceTest {
     @Mock
     private RecommendationRuleSet simpleLoanService;
 
-    private RecommendationService recommendationService;
+    private StaticRecommendationService recommendationService;
 
 //    @BeforeEach
 //    void setUp() throws SQLException {
 //        when(dataSource.getConnection()).thenReturn(connection);
 //
-//        recommendationService = new RecommendationService(
+//        recommendationService = new StaticRecommendationService(
 //                Arrays.asList(invest500Service, topSavingService, simpleLoanService),
 //                dataSource
 //        );
@@ -44,9 +44,9 @@ class RecommendationServiceTest {
 //
 //        Recommendation recommendation = new Recommendation("рекомендация", recommendationId, "описание");
 //
-//        when(invest500Service.getRecommendation(userId)).thenReturn(Optional.of(recommendation));
-//        when(topSavingService.getRecommendation(userId)).thenReturn(Optional.empty());
-//        when(simpleLoanService.getRecommendation(userId)).thenReturn(Optional.empty());
+//        when(invest500Service.getRecommendationByDynamicRules(userId)).thenReturn(Optional.of(recommendation));
+//        when(topSavingService.getRecommendationByDynamicRules(userId)).thenReturn(Optional.empty());
+//        when(simpleLoanService.getRecommendationByDynamicRules(userId)).thenReturn(Optional.empty());
 //
 //        List<Recommendation> response = recommendationService.getRecommendations(userId);
 //        assertNotNull(response);

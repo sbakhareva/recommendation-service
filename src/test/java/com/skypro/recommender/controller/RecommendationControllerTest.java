@@ -11,10 +11,10 @@ public class RecommendationControllerTest {
 //    @Autowired
 //    private MockMvc mockMvc;
 //    @MockitoBean
-//    private RecommendationService recommendationService;
+//    private StaticRecommendationService recommendationService;
 //
 //    @Test
-//    void getRecommendation() throws Exception {
+//    void getRecommendationByDynamicRules() throws Exception {
 //        UUID userId = UUID.fromString("d4a4d619-9a0c-4fc5-b0cb-76c49409546b");
 //
 //        String name = "рекомендация";

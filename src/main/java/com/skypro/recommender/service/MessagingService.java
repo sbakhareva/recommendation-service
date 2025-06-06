@@ -2,7 +2,6 @@ package com.skypro.recommender.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.model.dto.RecommendationDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
@@ -15,26 +14,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class MessagingService {
 
     private final TelegramBot telegramBot;
     private final RecommendationsRepository recommendationsRepository;
-    private final RecommendationService recommendationService;
-    private final RecommendationServiceV2 recommendationServiceV2;
+    private final StaticRecommendationService staticRecommendationService;
+    private final DynamicRecommendationService dynamicRecommendationService;
     private final RecommendationInfoRepository recommendationInfoRepository;
 
 
     public MessagingService(TelegramBot telegramBot,
                             RecommendationsRepository recommendationsRepository,
-                            RecommendationService recommendationService,
-                            RecommendationServiceV2 recommendationServiceV2,
+                            StaticRecommendationService staticRecommendationService,
+                            DynamicRecommendationService dynamicRecommendationService,
                             RecommendationInfoRepository recommendationInfoRepository) {
         this.telegramBot = telegramBot;
         this.recommendationsRepository = recommendationsRepository;
-        this.recommendationService = recommendationService;
-        this.recommendationServiceV2 = recommendationServiceV2;
+        this.staticRecommendationService = staticRecommendationService;
+        this.dynamicRecommendationService = dynamicRecommendationService;
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
@@ -78,7 +78,14 @@ public class MessagingService {
     public void sendRecommendation(long chatId, String message) throws IOException {
         try {
             UUID userId = recommendationsRepository.getUserIdByUsername(extractUsername(message));
-            List<RecommendationDTO> recommendations = recommendationServiceV2.getRecommendations(userId);
+
+            List<RecommendationDTO> recommendationsByDynamicRules = dynamicRecommendationService.getRecommendations(userId);
+            List<RecommendationDTO> recommendationsByStaticRules = staticRecommendationService.getRecommendations(userId);
+            List<RecommendationDTO> recommendations = Stream
+                    .concat(recommendationsByStaticRules.stream(), recommendationsByDynamicRules.stream())
+                    .distinct()
+                    .toList();
+
             if (recommendations.isEmpty()) {
                 SendMessage noRecs = new SendMessage(chatId, "К сожалению, для Вас не найдено подходящих продуктов!");
                 telegramBot.execute(noRecs);

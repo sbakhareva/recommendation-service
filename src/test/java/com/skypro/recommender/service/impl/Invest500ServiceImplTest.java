@@ -28,7 +28,7 @@ class Invest500ServiceImplTest {
 //        when(recommendationsRepository.checkIfUserHasTransactionTypeInvest(userId)).thenReturn(false);
 //        when(recommendationsRepository.getTotalSavingDeposit(userId)).thenReturn(10307);
 //
-//        String response = String.valueOf(invest500Service.getRecommendation(userId));
+//        String response = String.valueOf(invest500Service.getRecommendationByDynamicRules(userId));
 //        assertThat(response).contains("рекомендация");
 //        assertThat(response).contains("описание");
 //        assertThat(response).contains(recommendationId.toString());
@@ -41,7 +41,7 @@ class Invest500ServiceImplTest {
 //
 //        when(recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId)).thenReturn(false);
 //
-//        Optional<Recommendation> response = invest500Service.getRecommendation(userId);
+//        Optional<Recommendation> response = invest500Service.getRecommendationByDynamicRules(userId);
 //        assertThat(response).isEqualTo(Optional.empty());
 //    }
 }

@@ -29,7 +29,7 @@ class TopSavingServiceImplTest {
 //        when(recommendationsRepository.getTotalDebitDeposit(userId)).thenReturn(10307);
 //        when(recommendationsRepository.getTotalDebitWithdraw(userId)).thenReturn(10200);
 //
-//        String response = String.valueOf(topSavingService.getRecommendation(userId));
+//        String response = String.valueOf(topSavingService.getRecommendationByDynamicRules(userId));
 //        assertThat(response).contains("рекомендация");
 //        assertThat(response).contains("описание");
 //        assertThat(response).contains(recommendationId.toString());
@@ -42,7 +42,7 @@ class TopSavingServiceImplTest {
 //
 //        when(recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId)).thenReturn(false);
 //
-//        Optional<Recommendation> response = topSavingService.getRecommendation(userId);
+//        Optional<Recommendation> response = topSavingService.getRecommendationByDynamicRules(userId);
 //        assertThat(response).isEqualTo(Optional.empty());
 //    }
 }
