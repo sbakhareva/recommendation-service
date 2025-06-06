@@ -1,6 +1,5 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.exception.NoSuitableRecommendationsException;
 import com.skypro.recommender.model.dto.RecommendationDTO;
 import com.skypro.recommender.model.dto.RecommendationDTOMapper;
 import org.slf4j.Logger;
@@ -12,9 +11,6 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
 
 /**
  * Первая версия сервиса, работающая с правила, прописанными в коде
@@ -26,14 +22,11 @@ public class StaticRecommendationService {
 
     private final List<RecommendationRuleSet> rules;
     private final DataSource dataSource;
-    private final RecommendationDTOMapper recommendationDTOMapper;
 
     public StaticRecommendationService(List<RecommendationRuleSet> rules,
-                                       @Qualifier("recommendationsInfoDataSource") DataSource dataSource,
-                                       RecommendationDTOMapper recommendationDTOMapper) {
+                                       @Qualifier("recommendationsInfoDataSource") DataSource dataSource) {
         this.rules = rules;
         this.dataSource = dataSource;
-        this.recommendationDTOMapper = recommendationDTOMapper;
     }
 
     public List<RecommendationDTO> getRecommendations(UUID userId) {
