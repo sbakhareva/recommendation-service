@@ -1,7 +1,9 @@
 package com.skypro.recommender.service;
 
 import com.skypro.recommender.model.Rule;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.RecommendationDTOMapper;
 import com.skypro.recommender.repository.DynamicRulesRepository;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
@@ -20,13 +22,16 @@ public class RecommendationServiceV2 {
     private final DynamicRulesRepository dynamicRulesRepository;
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationInfoRepository recommendationInfoRepository;
+    private final RecommendationDTOMapper recommendationDTOMapper;
 
     public RecommendationServiceV2(DynamicRulesRepository dynamicRulesRepository,
                                    RecommendationsRepository recommendationsRepository,
-                                   RecommendationInfoRepository recommendationInfoRepository) {
+                                   RecommendationInfoRepository recommendationInfoRepository,
+                                   RecommendationDTOMapper recommendationDTOMapper) {
         this.dynamicRulesRepository = dynamicRulesRepository;
         this.recommendationsRepository = recommendationsRepository;
         this.recommendationInfoRepository = recommendationInfoRepository;
+        this.recommendationDTOMapper = recommendationDTOMapper;
     }
 
 
@@ -38,12 +43,12 @@ public class RecommendationServiceV2 {
      */
     public List<RecommendationDTO> getRecommendations(UUID userId) {
 
-        List<RecommendationDTO> recommendations = recommendationInfoRepository.getAllRecommendations();
+        List<Recommendation> recommendations = recommendationInfoRepository.getAllRecommendations();
         List<RecommendationDTO> suitableRecommendations = new ArrayList<>();
 
-        for (RecommendationDTO recommendation : recommendations) {
+        for (Recommendation recommendation : recommendations) {
             if (recommendation.getRules() == null || recommendation.getRules().isEmpty()) {
-                suitableRecommendations.add(recommendation);
+                suitableRecommendations.add(recommendationDTOMapper.apply(recommendation));
             }
 
             List<Rule> rules = recommendation.getRules();
@@ -58,7 +63,7 @@ public class RecommendationServiceV2 {
                 }
             }
             if (allPassed) {
-                suitableRecommendations.add(recommendation);
+                suitableRecommendations.add(recommendationDTOMapper.apply(recommendation));
             }
         }
         return suitableRecommendations;

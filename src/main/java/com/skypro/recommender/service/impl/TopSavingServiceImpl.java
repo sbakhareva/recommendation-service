@@ -1,6 +1,7 @@
 package com.skypro.recommender.service.impl;
 
 import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.RecommendationDTOMapper;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
 import com.skypro.recommender.service.RecommendationRuleSet;
@@ -14,11 +15,14 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
 
     private final RecommendationsRepository recommendationsRepository;
     private final RecommendationInfoRepository recommendationInfoRepository;
+    private final RecommendationDTOMapper recommendationDTOMapper;
 
     public TopSavingServiceImpl(RecommendationsRepository recommendationsRepository,
-                                RecommendationInfoRepository recommendationInfoRepository) {
+                                RecommendationInfoRepository recommendationInfoRepository,
+                                RecommendationDTOMapper recommendationDTOMapper) {
         this.recommendationsRepository = recommendationsRepository;
         this.recommendationInfoRepository = recommendationInfoRepository;
+        this.recommendationDTOMapper = recommendationDTOMapper;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class TopSavingServiceImpl implements RecommendationRuleSet {
         if (recommendationsRepository.checkIfUserHasTransactionTypeDebit(userId) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) >= 50000 || recommendationsRepository.getTotalSavingDeposit(userId) >= 50000) &&
                 (recommendationsRepository.getTotalDebitDeposit(userId) > recommendationsRepository.getTotalDebitWithdraw(userId))) {
-            return Optional.of(recommendationInfoRepository.getRecommendation(id));
+            return Optional.of(recommendationDTOMapper.apply(recommendationInfoRepository.getRecommendation(id)));
         }
         return Optional.empty();
     }

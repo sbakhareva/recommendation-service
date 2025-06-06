@@ -1,6 +1,7 @@
 package com.skypro.recommender.service;
 
 import com.skypro.recommender.model.dto.RecommendationDTO;
+import com.skypro.recommender.model.dto.RecommendationDTOMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,11 +23,14 @@ public class RecommendationService {
 
     private final List<RecommendationRuleSet> rules;
     private final DataSource dataSource;
+    private final RecommendationDTOMapper recommendationDTOMapper;
 
     public RecommendationService(List<RecommendationRuleSet> rules,
-                                 @Qualifier("recommendationsInfoDataSource") DataSource dataSource) {
+                                 @Qualifier("recommendationsInfoDataSource") DataSource dataSource,
+                                 RecommendationDTOMapper recommendationDTOMapper) {
         this.rules = rules;
         this.dataSource = dataSource;
+        this.recommendationDTOMapper = recommendationDTOMapper;
     }
 
     public List<RecommendationDTO> getRecommendations(UUID userId) {

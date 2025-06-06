@@ -2,6 +2,7 @@ package com.skypro.recommender.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.model.dto.RecommendationDTO;
 import com.skypro.recommender.repository.RecommendationInfoRepository;
 import com.skypro.recommender.repository.RecommendationsRepository;
@@ -83,7 +84,7 @@ public class MessagingService {
                 telegramBot.execute(noRecs);
             }
             for (RecommendationDTO recommendation : recommendations) {
-                String name = recommendationInfoRepository.getRecommendationName(recommendation.getId());
+                String name = recommendationInfoRepository.getRecommendationName(recommendation.getRecommendationId());
                 switch (name) {
                     case "Simple Loan" -> {
                         String text = Files.readString(Path.of("src/main/resources/messages/SimpleLoanMessage.txt"));

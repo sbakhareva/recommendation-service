@@ -12,11 +12,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -31,19 +28,23 @@ public class DynamicRulesRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void createRule(Rule rule, UUID recommendationId) throws JsonProcessingException {
-        String argumentsJson = new ObjectMapper().writeValueAsString(rule.getArguments());
-        jdbcTemplate.update(
-                "INSERT INTO rules " +
-                        "(id, query, arguments, negate, recommendation_id, counter) " +
-                        "VALUES (?, ?, ?, ?, ?)",
-                UUID.randomUUID(),
-                rule.getQuery(),
-                argumentsJson,
-                rule.getNegate(),
-                recommendationId,
-                0
-        );
+    public void createRuleByRecommendationId(Rule rule, UUID recommendationId) {
+        try {
+            String argumentsJson = new ObjectMapper().writeValueAsString(rule.getArguments());
+            jdbcTemplate.update(
+                    "INSERT INTO rules " +
+                            "(id, query, arguments, negate, recommendation_id, counter) " +
+                            "VALUES (?, ?, ?, ?, ?)",
+                    UUID.randomUUID(),
+                    rule.getQuery(),
+                    argumentsJson,
+                    rule.getNegate(),
+                    recommendationId,
+                    0
+            );
+        } catch (JsonProcessingException e) {
+            System.out.println("Ошибка при сериализации аргументов в строку!");
+        }
     }
 
     @Cacheable(value = "getRules", key = "#recommendationId")
@@ -82,7 +83,7 @@ public class DynamicRulesRepository {
         String request = "SELECT id AS ruleId, " +
                 "counter AS count " +
                 "FROM rules";
-        List<StatisticItem> stats =  jdbcTemplate.query(
+        List<StatisticItem> stats = jdbcTemplate.query(
                 request, (s, rowNum) -> {
                     return new StatisticItem(
                             UUID.fromString(s.getString("id")),
