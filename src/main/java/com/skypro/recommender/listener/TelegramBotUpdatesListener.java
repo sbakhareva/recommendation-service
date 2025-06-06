@@ -63,14 +63,15 @@ public class TelegramBotUpdatesListener {
 
             if ("/start".equals(text)) {
                 messagingService.sendWelcomeMessage(chatId);
-            }
-            if (text.startsWith("/recommend")) {
+            } else if (text.startsWith("/recommend")) {
                 messagingService.sendRecommendationMessage(chatId, text);
                 try {
                     messagingService.sendRecommendation(chatId, text);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            } else {
+                messagingService.sendUnknownCommandMessage(chatId, text);
             }
         }
     }

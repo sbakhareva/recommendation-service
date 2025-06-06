@@ -114,4 +114,9 @@ public class MessagingService {
             SendMessage exception = new SendMessage(chatId, "Пользователь не найден");
         }
     }
+
+    public void sendUnknownCommandMessage(long chatId, String text) {
+        SendMessage message = new SendMessage(chatId, "Я пока не знаю такой команды: " + text);
+        telegramBot.execute(message);
+    }
 }
