@@ -77,7 +77,7 @@ public class DynamicRecommendationService {
      * @return boolean-результат, прошло ли правило проверку
      */
     @Transactional
-    private boolean checkRules(UUID userId, Rule rule) {
+    public boolean checkRules(UUID userId, Rule rule) {
 
         List<String> arguments = rule.getArguments();
         boolean result = switch (rule.getQuery()) {

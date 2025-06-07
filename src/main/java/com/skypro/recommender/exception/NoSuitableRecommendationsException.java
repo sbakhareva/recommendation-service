@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class NoSuitableRecommendationsException extends NoSuchElementException {
+
     public NoSuitableRecommendationsException() {
         super("К сожалению, для Вас нет подходящих рекомендаций!");
     }

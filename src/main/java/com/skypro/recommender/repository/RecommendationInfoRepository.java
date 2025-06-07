@@ -2,7 +2,6 @@ package com.skypro.recommender.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.utils.RuleRowMapper;
@@ -78,13 +77,13 @@ public class RecommendationInfoRepository {
     }
 
     @Cacheable(value = "recWithRules", key = "#recommendationId")
-    public RecommendationInfo getRecommendationWithRules(UUID recommendationId) {
-        RecommendationInfo recommendation = jdbcTemplate.queryForObject(
+    public Recommendation getRecommendationWithRules(UUID recommendationId) {
+        Recommendation recommendation = jdbcTemplate.queryForObject(
                 "SELECT id, name, description " +
                         "FROM recommendations " +
                         "WHERE id = ? ",
                 (rs, rowNum) -> {
-                    RecommendationInfo rec = new RecommendationInfo();
+                    Recommendation rec = new Recommendation();
                     rec.setName(rs.getString("name"));
                     rec.setId(UUID.fromString(rs.getString("id")));
                     rec.setDescription(rs.getString("description"));

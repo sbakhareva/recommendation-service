@@ -1,7 +1,6 @@
 package com.skypro.recommender.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.skypro.recommender.model.RecommendationInfo;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.model.Recommendation;
@@ -28,9 +27,14 @@ public class DynamicRulesController {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    // Оставила для себя для удобства
+    /**
+     * Метод, который позволяет добавить к уже существующей в базе данных рекомендации новые правила
+     * @param rule новое правило
+     * @param recommendationId id существующей рекомендации
+     * @return рекомендация с новым правилом в списке
+     */
     @PostMapping("/{recommendation_id}")
-    public RecommendationInfo createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
+    public Recommendation createRule(@RequestBody Rule rule, @PathVariable("recommendation_id") UUID recommendationId) {
         return dynamicRulesService.createRuleByRecommendationId(rule, recommendationId);
     }
 
@@ -40,17 +44,13 @@ public class DynamicRulesController {
      * @return созданная рекомендация со списком правил
      */
     @PostMapping
-    public RecommendationInfo createRecommendationWithRules(@RequestBody Recommendation recommendation) {
-        try {
-            recommendationInfoRepository.createRecommendationWithRules(recommendation);
-        } catch (JsonProcessingException e) {
-            System.out.println("Ошибка сериализации списка аргументов");
-        }
+    public Recommendation createRecommendationWithRules(@RequestBody Recommendation recommendation) {
+        dynamicRulesService.createRecommendationWithRules(recommendation);
         return recommendationInfoRepository.getRecommendationWithRules(recommendation.getId());
     }
 
     @GetMapping("/{recommendation_id}")
-    public RecommendationInfo getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
+    public Recommendation getRecommendationWithRules(@PathVariable("recommendation_id") UUID recommendationId) {
         return dynamicRulesService.getRecommendationWithRules(recommendationId);
     }
 

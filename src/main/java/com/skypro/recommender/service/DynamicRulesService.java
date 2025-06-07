@@ -1,6 +1,7 @@
 package com.skypro.recommender.service;
 
-import com.skypro.recommender.model.RecommendationInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skypro.recommender.model.Recommendation;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.repository.DynamicRulesRepository;
@@ -21,12 +22,21 @@ public class DynamicRulesService {
         this.recommendationInfoRepository = recommendationInfoRepository;
     }
 
-    public RecommendationInfo createRuleByRecommendationId(Rule rule, UUID recommendationId) {
+    public Recommendation createRuleByRecommendationId(Rule rule, UUID recommendationId) {
         dynamicRulesRepository.createRuleByRecommendationId(rule, recommendationId);
         return recommendationInfoRepository.getRecommendationWithRules(recommendationId);
     }
 
-    public RecommendationInfo getRecommendationWithRules(UUID recommendationId) {
+    public Recommendation createRecommendationWithRules(Recommendation recommendation) {
+        try {
+            recommendationInfoRepository.createRecommendationWithRules(recommendation);
+        } catch (JsonProcessingException e) {
+            System.out.println("Ошибка сериализации списка аргументов!");
+        }
+        return recommendationInfoRepository.getRecommendationWithRules(recommendation.getId());
+    }
+
+    public Recommendation getRecommendationWithRules(UUID recommendationId) {
         return recommendationInfoRepository.getRecommendationWithRules(recommendationId);
     }
 

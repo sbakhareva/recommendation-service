@@ -18,4 +18,11 @@ public class RecommendationExceptionHandler {
         ResponseStatus status = e.getClass().getAnnotation(ResponseStatus.class);
         return new ResponseEntity<>(e.getMessage(), status.code());
     }
+
+    @ExceptionHandler(IdIsNotFoundException.class)
+    public ResponseEntity<String> handleIdIsNotFoundException(IdIsNotFoundException e) {
+        logger.warn(e.getMessage(), e);
+        ResponseStatus status = e.getClass().getAnnotation(ResponseStatus.class);
+        return new ResponseEntity<>(e.getMessage(), status.code());
+    }
 }
