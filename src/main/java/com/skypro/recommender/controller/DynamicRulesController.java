@@ -1,6 +1,5 @@
 package com.skypro.recommender.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skypro.recommender.model.Rule;
 import com.skypro.recommender.model.RuleStatistics;
 import com.skypro.recommender.model.Recommendation;

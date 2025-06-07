@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * Вторая версия сервиса рекомендаций, работающая с динамическими правилами, сохраненными в базе данных
- * Сервис возвращает список рекомендаций для пользователя по переданному user_id
+ * Сервис рекомендаций, работающий с динамическими правилами, сохраненными в базе данных
  */
 @Service
 public class DynamicRecommendationService {

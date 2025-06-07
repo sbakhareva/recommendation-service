@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис, отвечающий за CRUD-операции с динамическими правилами и связанными с ними рекомендациями
+ */
 @Service
 public class DynamicRulesService {
 

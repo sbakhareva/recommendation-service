@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Первая версия сервиса, работающая с правила, прописанными в коде
+ * Сервис, работающий со статическими правилами, прописанными в коде
  */
 @Service
 public class StaticRecommendationService {

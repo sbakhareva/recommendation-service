@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Репозиторий, который работает с базой данных recommendation-info, в основном с таблицей rules
+ * Репозиторий, который работает с таблицей rules базы данных recommendation-info
  */
 @Repository
 public class DynamicRulesRepository {

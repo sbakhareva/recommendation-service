@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+/**
+ * Сервис для отправки сообщений через телеграм-бота
+ */
 @Service
 public class MessagingService {
 
